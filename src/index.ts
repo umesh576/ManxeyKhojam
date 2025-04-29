@@ -6,11 +6,13 @@ dotenv.config();
 const app = express();
 const port = 5000;
 
+// accessing the path os database
 const DB_URI = process.env.DB_URI || "";
-console.log(DB_URI);
 
 import connectDatabase from "./config/database.config";
 connectDatabase(DB_URI);
+
+app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/user", userRoute);
 
