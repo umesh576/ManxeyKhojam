@@ -39,8 +39,9 @@ const jobSeeker = new mongoose.Schema(
       maxLength: [20, "Phonenumber must be small than the 20 letter"],
     },
     role: {
+      type: String,
       enum: Object.values(Role),
-      default: ["jobseeker"],
+      default: Role.jobSeeker,
     },
     jobType: {
       type: String,

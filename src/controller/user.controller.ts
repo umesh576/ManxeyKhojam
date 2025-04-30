@@ -4,6 +4,8 @@ import User from "../model/jobseeker.model";
 import customError from "../middleware/errroHandler.middleware";
 import { hash } from "../utils/bcrypt.hash";
 import { compare } from "bcrypt";
+import { generateToken } from "../utils/jwt.utils";
+import { Ipayload } from "../@types/role.jobseeker";
 
 //api for the user registeriation
 export const registerJobseeker = async (req: Request, res: Response) => {
@@ -47,7 +49,9 @@ export const login = async (req: Request, res: Response) => {
   if (!password) {
     throw new customError("Password is mecessary for login", 404);
   }
+
   const user = await User.findOne({ email });
+
   if (!user) {
     throw new customError("User can't find", 404);
   }
@@ -57,10 +61,21 @@ export const login = async (req: Request, res: Response) => {
   if (!isUser) {
     throw new customError("User cannot found", 404);
   }
+
+  const payload: Ipayload = {
+    _id: user._id,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    role: user.role,
+  };
+  const jwtToken = generateToken(payload);
+  console.log(jwtToken);
+
   res.status(200).json({
     status: "sucess",
     statusCode: 201,
     message: "User login sucessfully",
     data: user,
+    token: jwtToken,
   });
 };
