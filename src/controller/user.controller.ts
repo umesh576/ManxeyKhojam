@@ -71,11 +71,19 @@ export const login = async (req: Request, res: Response) => {
   const jwtToken = generateToken(payload);
   console.log(jwtToken);
 
-  res.status(200).json({
-    status: "sucess",
-    statusCode: 201,
-    message: "User login sucessfully",
-    data: user,
-    token: jwtToken,
-  });
+  res
+    .cookie("acess_token", jwtToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict",
+      maxAge: 3600000,
+    })
+    .status(200)
+    .json({
+      status: "sucess",
+      statusCode: 201,
+      message: "User login sucessfully",
+      data: user,
+      token: jwtToken,
+    });
 };

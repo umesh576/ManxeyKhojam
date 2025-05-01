@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
-const port = 5000;
+const PORT = process.env.PORT || 4000;
 
 // accessing the path os database
 const DB_URI = process.env.DB_URI || "";
@@ -16,6 +16,6 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/user", userRoute);
 
-app.listen(port, () => {
-  console.log(`server running at http://localhost:${port}`);
+app.listen(PORT, () => {
+  console.log(`server running at http://localhost:${PORT}`);
 });
