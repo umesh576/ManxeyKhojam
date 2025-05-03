@@ -1,5 +1,4 @@
-import mongoose, { Schema } from "mongoose";
-import User from "./jobseeker.model";
+import mongoose from "mongoose";
 
 const jobCategorySchema = new mongoose.Schema(
   {
