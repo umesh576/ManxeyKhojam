@@ -8,7 +8,7 @@ import { generateToken } from "../utils/jwt.utils";
 import { Ipayload } from "../@types/role.jobseeker";
 
 //api for the user registeriation
-export const registerJobseeker = async (req: Request, res: Response) => {
+export const registerUser = async (req: Request, res: Response) => {
   const body = req.body;
   console.log(body);
   if (!body.firstName) {
@@ -86,4 +86,43 @@ export const login = async (req: Request, res: Response) => {
       data: user,
       token: jwtToken,
     });
+};
+
+export const findOneUser = async (req: Request, res: Response) => {
+  const { userId } = req.body;
+  console.log(userId);
+  if (!userId) {
+    throw new customError("UserId need for search single user", 404);
+  }
+  const user = await User.findById(userId);
+  res.status(201).json({
+    status: "sucess",
+    statuCode: 201,
+    message: "User search By Id done sucessfully",
+    data: user,
+  });
+};
+
+export const delUser = async (req: Request, res: Response) => {
+  const { userId } = req.body;
+  if (!userId) {
+    throw new customError("UserId required for delete user", 404);
+  }
+  const delUser = await User.findByIdAndDelete(userId);
+  res.status(201).json({
+    status: "sucess",
+    statuCode: 201,
+    message: "User Deleted By Id",
+    data: delUser,
+  });
+};
+
+export const findAllUser = async (req: Request, res: Response) => {
+  const allUser = await User.find();
+  res.status(201).json({
+    status: "sucess",
+    statuCode: 201,
+    message: "User Deleted By Id",
+    data: allUser,
+  });
 };
