@@ -1,4 +1,5 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
+import User from "./jobseeker.model";
 
 const jobCategorySchema = new mongoose.Schema(
   {
@@ -12,6 +13,11 @@ const jobCategorySchema = new mongoose.Schema(
       trim: true,
       required: [true, "Decription needed for more accurate information"],
       minLength: [10, "Give more info about job"],
+    },
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: [true, "User reequired for create Jobcategory"],
     },
   },
   { timestamps: true }
