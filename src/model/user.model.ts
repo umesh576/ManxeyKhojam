@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { Role } from "./../@types/role.jobseeker";
+import { Role } from "../@types/role.jobseeker";
 const emailRegex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
 
 const jobSeeker = new mongoose.Schema(
@@ -58,6 +58,11 @@ const jobSeeker = new mongoose.Schema(
       type: String,
       trim: true,
       required: [true, "Address required for the register."],
+    },
+    gender: {
+      type: String,
+      trim: true,
+      required: [true, "Gender required for the register."],
     },
   },
   //this timesatmp can save the crated time date also sotre in the database
