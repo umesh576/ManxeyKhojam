@@ -1,26 +1,38 @@
 import customError from "../middleware/errroHandler.middleware";
 import { Request, Response } from "express";
 import User from "../model/user.model";
+import { sendOtp } from "../middleware/sendForgetPin.middleware";
 
 export const forgetPassword = async (req: Request, res: Response) => {
-  const body = req.body;
+  try {
+    const { email } = req.body;
 
-  console.log(body.email);
-  if (!body.email) {
-    throw new customError("Email is must required for Reset password", 400);
+    if (!email) {
+      throw new customError("Email is must required for Reset password", 400);
+    }
+
+    const isUser = await User.findOne({ email });
+    console.log(isUser);
+    if (!isUser) {
+      throw new customError("User is not exist with this email", 400);
+    }
+
+    const forgetPin = Math.floor(Math.random() * 10000);
+    console.log(forgetPin);
+
+    const html = `Your Otp code is ${forgetPin} and please enter pin for the reset the password.`;
+    const userDetails = {
+      to: isUser.email,
+      subject: "Reset password pin",
+      html,
+    };
+    await sendOtp(userDetails);
+    res.status(200).json({
+      status: 200,
+      statusCode: 200,
+      message: "OTP can sucessfully send.",
+    });
+  } catch (error) {
+    console.log(error);
   }
-
-  const isUser = await User.findOne({ email: body.email });
-  console.log(isUser);
-  if (!isUser) {
-    throw new customError("User is not exist with this email", 400);
-  }
-
-  const forgetPin = Math.random();
-  console.log(forgetPin);
-  res.status(200).json({
-    status: 200,
-    statusCode: 200,
-    message: "OTP can sucessfully send.",
-  });
 };
