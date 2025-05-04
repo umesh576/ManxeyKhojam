@@ -1,7 +1,7 @@
 import customError from "../middleware/errroHandler.middleware";
 import { Request, Response } from "express";
 import User from "../model/user.model";
-import { sendOtp } from "../middleware/sendForgetPin.middleware";
+import { sendOtp } from "../utils/sendForgetPin.middleware";
 
 export const forgetPassword = async (req: Request, res: Response) => {
   try {
