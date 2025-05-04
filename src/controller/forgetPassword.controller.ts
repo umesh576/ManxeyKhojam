@@ -2,6 +2,7 @@ import customError from "../middleware/errroHandler.middleware";
 import { Request, Response } from "express";
 import User from "../model/user.model";
 import { sendOtp } from "../utils/sendForgetPin.utils";
+import { generateOtp } from "../utils/generateOtp.utils";
 
 export const forgetPassword = async (req: Request, res: Response) => {
   try {
@@ -17,8 +18,7 @@ export const forgetPassword = async (req: Request, res: Response) => {
       throw new customError("User is not exist with this email", 400);
     }
 
-    const forgetPin = Math.floor(Math.random() * 10000);
-    console.log(forgetPin);
+    const forgetPin = generateOtp();
 
     const html = `Your Otp code is ${forgetPin} and please enter pin for the reset the password.`;
     const userDetails = {
@@ -27,11 +27,26 @@ export const forgetPassword = async (req: Request, res: Response) => {
       html,
     };
     await sendOtp(userDetails);
-    res.status(200).json({
-      status: 200,
-      statusCode: 200,
-      message: "OTP can sucessfully send.",
-    });
+
+    const cookieData = {
+      email,
+      forgetPin,
+    };
+    console.log(cookieData);
+    res
+      .cookie("checkOtp", JSON.stringify(cookieData), {
+        httpOnly: true,
+        secure: true,
+        sameSite: "strict",
+        maxAge: 3600000,
+      })
+      .status(200)
+      .json({
+        status: 200,
+        statusCode: 200,
+        message: "OTP can sucessfully send.",
+        data: forgetPin,
+      });
   } catch (error) {
     console.log(error);
   }
