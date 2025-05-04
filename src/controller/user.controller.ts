@@ -131,126 +131,57 @@ export const findAllUser = async (req: Request, res: Response) => {
 };
 
 //update user detail
-// export const updateUser = async (req: Request, res: Response) => {
-//   const {
-//     email,
-//     password,
-//     userId,
-//     firstName,
-//     lastName,
-//     gender,
-//     phoneNumber,
-//     Skill,
-//   } = req.body;
-
-//   if (!userId) {
-//     throw new customError("Please provide the user detail for delete", 404);
-//   }
-
-//   if (!email) {
-//     throw new customError("Please provide the user email for delete", 404);
-//   }
-
-//   if (!password) {
-//     throw new customError("Please provide the user password for delete", 404);
-//   }
-
-//   const userMatch = await User.findOne({ email });
-
-//   if (!userMatch?.password) {
-//     throw new customError("password not avalible of user", 404);
-//   }
-//   console.log(userMatch);
-//   const isUser = await compare(password, userMatch?.password);
-
-//   if (!isUser) {
-//     throw new customError("Password of the user not matched", 401);
-//   }
-//   const upadateUser = await User.findByIdAndUpdate(
-//     userId,
-//     {
-//       firstName,
-//       lastName,
-//       gender,
-//       phoneNumber,
-//       Skill,
-//     },
-//     { new: true }
-//   );
-
-//   res.status(201).json({
-//     status: "sucess",
-//     statuCode: 201,
-//     message: "User updated sucessfully",
-//     data: upadateUser,
-//   });
-// };
-
 export const updateUser = async (req: Request, res: Response) => {
-  try {
-    const {
-      email,
-      password,
-      userId,
+  const {
+    email,
+    password,
+    userId,
+    firstName,
+    lastName,
+    gender,
+    phoneNumber,
+    Skill,
+  } = req.body;
+
+  if (!userId) {
+    throw new customError("Please provide the user detail for delete", 404);
+  }
+
+  if (!email) {
+    throw new customError("Please provide the user email for delete", 404);
+  }
+
+  if (!password) {
+    throw new customError("Please provide the user password for delete", 404);
+  }
+
+  const userMatch = await User.findOne({ email });
+
+  if (!userMatch?.password) {
+    throw new customError("password not avalible of user", 404);
+  }
+
+  const isUser = await compare(password, userMatch?.password);
+
+  if (!isUser) {
+    throw new customError("Password of the user not matched", 401);
+  }
+  const upadateUser = await User.findByIdAndUpdate(
+    userId,
+    {
       firstName,
       lastName,
       gender,
       phoneNumber,
       Skill,
-    } = req.body;
+    },
+    { new: true }
+  );
 
-    // Validate input
-    if (!userId) {
-      throw new customError("Please provide the user ID for update", 400);
-    }
-
-    if (!email) {
-      throw new customError("Please provide the user email", 400);
-    }
-
-    if (!password) {
-      throw new customError("Please provide the user password", 400);
-    }
-
-    const userMatch = await User.findOne({ email });
-
-    if (!userMatch?.password) {
-      throw new customError("User or password not available", 404);
-    }
-
-    const isUser = await compare(password, userMatch.password);
-
-    if (!isUser) {
-      throw new customError("Password does not match", 401);
-    }
-
-    // Proceed to update
-    const updatedUser = await User.findByIdAndUpdate(
-      userId,
-      {
-        firstName,
-        lastName,
-        gender,
-        phoneNumber,
-        Skill,
-      },
-      { new: true }
-    );
-
-    if (!updatedUser) {
-      throw new customError("Failed to update user or user not found", 404);
-    }
-
-    res.status(200).json({
-      status: "success",
-      statusCode: 200,
-      message: "User updated successfully",
-      data: updatedUser,
-    });
-  } catch (err: any) {
-    res.status(err.statusCode || 500).json({
-      status: "error",
-      message: err.message || "Internal server error",
-    });
-  }
+  res.status(201).json({
+    status: "sucess",
+    statuCode: 201,
+    message: "User updated sucessfully",
+    data: upadateUser,
+  });
 };
