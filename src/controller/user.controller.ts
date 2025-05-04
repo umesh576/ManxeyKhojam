@@ -1,5 +1,14 @@
+/*
+what is in this file?
+User register?
+User login?
+User Update?
+Get all User?
+Get User by Id?
+delete User by Id?
+
+*/
 import { Request, Response } from "express";
-// import User from "../model/employer.model";
 import User from "../model/user.model";
 import customError from "../middleware/errroHandler.middleware";
 import { hash } from "../utils/bcrypt.hash";

@@ -1,6 +1,7 @@
 import express from "express";
 import userRoute from "./routes/user.routes";
 import jobCategory from "./routes/jobCategory.routes";
+import passwordForget from "./routes/forgetPassword.routes";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -17,6 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/user", userRoute);
 app.use("/api/jobcategory", jobCategory);
+app.use("/api/forget", passwordForget);
 
 app.listen(PORT, () => {
   console.log(`server running at http://localhost:${PORT}`);
