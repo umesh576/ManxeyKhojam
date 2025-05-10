@@ -33,6 +33,7 @@ export const findJob = async (req: Request, res: Response) => {
     data: jobSearch,
   });
 };
+
 export const findJobById = async (req: Request, res: Response) => {
   const body = req.body;
 
