@@ -64,6 +64,14 @@ const jobSeeker = new mongoose.Schema(
       trim: true,
       required: [true, "Gender required for the register."],
     },
+    appliedPost: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        trim: true,
+        ref: "applyPost",
+      },
+    ],
   },
   //this timesatmp can save the crated time date also sotre in the database
   { timestamps: true }

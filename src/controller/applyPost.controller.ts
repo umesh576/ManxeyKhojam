@@ -38,17 +38,15 @@ export const applyPost = async (req: Request, res: Response) => {
 
 //cancel apply post
 export const cancelApplyPost = async (req: Request, res: Response) => {
-  const { userId, applyPostId } = req.body;
-
-  if (!userId) {
+  const body = req.body;
+  if (body === null) {
+    throw new customError("provide data of user", 400);
+  }
+  if (!body.userId) {
     throw new customError("please provide the userId", 400);
   }
-  if (!applyPostId) {
+  if (!body.applyPostId) {
     throw new customError("please provide the userId", 400);
-  }
-  const userCancel = await User.findById(userId);
-  if (userCancel?.createdAt >= Number(Date().concat) + 5) {
-    throw new customError("Unable to cancel your form", 400);
   }
   const cancelApply = await ApplyPost.findByIdAndDelete(applyPostId);
 
@@ -59,3 +57,6 @@ export const cancelApplyPost = async (req: Request, res: Response) => {
     data: cancelApply,
   });
 };
+
+//for edit user apply data
+export const editApplyPost = async (req: Request, res: Response) => {};
