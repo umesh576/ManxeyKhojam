@@ -81,3 +81,18 @@ export const updatePost = async (req: Request, res: Response) => {
     console.log(error);
   }
 };
+
+//get post by id use in frontend if needed
+export const getPostById = async (req: Request, res: Response) => {
+  const { postId } = req.body;
+  if (!postId) {
+    throw new customError("post Invalid!", 404);
+  }
+  const upPost = await Post.findById(postId);
+  res.status(200).json({
+    status: "sucess",
+    success: true,
+    statusCode: 200,
+    data: upPost,
+  });
+};
