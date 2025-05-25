@@ -1,3 +1,4 @@
+import { applyPostDet } from "../@types/applyPost.type4s";
 import { IApplyUser } from "../@types/applyUser.types";
 import customError from "../middleware/errroHandler.middleware";
 import ApplyPost from "../model/applyPost.model";
@@ -5,8 +6,8 @@ import User from "../model/user.model";
 
 //apply post remmaning
 export const applyPost = async (req: Request, res: Response) => {
-  const body = req.body;
-  const { userId, postId } = body;
+  const { userId, postId } = req.body;
+  // const  = body;
   if (!postId) {
     throw new customError("Please verify you are apply in which post.", 400);
   }
@@ -46,14 +47,16 @@ export const cancelApplyPost = async (req: Request, res: Response) => {
     throw new customError("please provide the userId", 400);
   }
   if (!body.applyPostId) {
-    throw new customError("please provide the userId", 400);
+    throw new customError("please provide the applyPostId", 400);
   }
-  const cancelApply = await ApplyPost.findByIdAndDelete(applyPostId);
+
+  const { applyPostId } = body.applyPostId;
+  const cancelApply = await ApplyPost.findByIdAndDelete({ applyPostId });
 
   res.status(200).json({
-    sucess: true,
+    success: true,
     statusCode: 200,
-    message: "Your application is sucessfully created.",
+    message: "Your application is sucessfully canceled.",
     data: cancelApply,
   });
 };

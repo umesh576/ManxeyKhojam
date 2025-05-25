@@ -9,7 +9,7 @@ import {
 const server = Router();
 
 server.post("/add", createPost);
-server.delete("delPost", deletePost);
+server.delete("/delPost", deletePost);
 server.patch("/update", updatePost);
 server.get("/seeAll", getAllPost);
 

@@ -24,6 +24,7 @@ const DB_URI = process.env.DB_URI || "";
 connectDatabase(DB_URI);
 
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json()); // This parses JSON request bodies
 
 app.use("/api/user", userRoute);
 app.use("/api/jobcategory", jobCategory);

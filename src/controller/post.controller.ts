@@ -5,12 +5,13 @@ import Post from "../model/post.model";
 //for creating post
 export const createPost = async (req: Request, res: Response) => {
   const body = req.body;
+  console.log(body);
 
   if (Object.keys(body).length == 0) {
     throw new customError("All feild are empty. No post is done.", 400);
   }
 
-  const newPost = await Post.create({ body });
+  const newPost = await Post.create(body);
 
   res.status(200).json({
     sucess: true,
@@ -51,27 +52,32 @@ export const deletePost = async (req: Request, res: Response) => {
 
 // for update Post
 export const updatePost = async (req: Request, res: Response) => {
-  const { postId } = req.body;
-  if (!postId) {
-    throw new customError("Please verify the post for update.", 400);
-  }
+  try {
+    const { postId } = req.body;
+    if (!postId) {
+      throw new customError("Please verify the post for update.", 400);
+    }
 
-  const updPost = await Post.findByIdAndUpdate(
-    postId,
-    {
-      title: String,
-      description: String,
-      qualification: String,
-      salary: String,
-      experience: String,
-      picturePost: String,
-    },
-    { new: true }
-  );
-  res.status(200).json({
-    sucess: true,
-    statusCode: 200,
-    message: "Post can update sucessfully.",
-    data: updPost,
-  });
+    const updPost = await Post.findByIdAndUpdate(
+      postId,
+      {
+        title: req.body.title,
+        description: req.body.description,
+        qualification: req.body.qualification,
+        salary: req.body.salary,
+        experience: req.body.experience,
+        picturePost: req.body.picturePost,
+      },
+      { new: true }
+    );
+    console.log(updPost);
+    res.status(200).json({
+      sucess: true,
+      statusCode: 200,
+      message: "Post can update sucessfully.",
+      data: updPost,
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
