@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import customError from "../middleware/errroHandler.middleware";
 import Post from "../model/post.model";
+import User from "../model/user.model";
+import mongoose from "mongoose";
 
 //for creating post
 export const createPost = async (req: Request, res: Response) => {
@@ -10,7 +12,17 @@ export const createPost = async (req: Request, res: Response) => {
   if (Object.keys(body).length == 0) {
     throw new customError("All feild are empty. No post is done.", 400);
   }
+  console.log(body);
+  const { userId } = body;
 
+  const userPost = await User.findById(userId);
+  console.log(userPost);
+
+  if (!userPost) {
+    throw new customError("verify which user creating the post", 404);
+  }
+
+  userPost.createdPost.push(new mongoose.Types.ObjectId(userId));
   const newPost = await Post.create(body);
 
   res.status(200).json({

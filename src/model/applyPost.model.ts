@@ -4,6 +4,7 @@ const applyPostSchema = new mongoose.Schema(
   {
     userId: {
       type: Schema.Types.ObjectId,
+      ref: "Post",
       required: [true, "UserId must be needed"],
     },
     postId: {

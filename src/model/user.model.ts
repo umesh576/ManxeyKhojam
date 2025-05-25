@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import { Role } from "../@types/role.jobseeker";
 const emailRegex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
 
@@ -64,6 +64,14 @@ const jobSeeker = new mongoose.Schema(
       trim: true,
       required: [true, "Gender required for the register."],
     },
+    createdPost: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        trim: true,
+        ref: "post",
+      },
+    ],
     appliedPost: [
       {
         type: mongoose.Schema.Types.ObjectId,
