@@ -1,0 +1,28 @@
+ finished work are here
+
+    jobseeker registeration
+    jobseeker login
+
+    jobgiver registeration
+    jobgiver login
+
+    people find by id
+    delete by user id
+    find all user
+    update user
+
+
+
+
+pending work 
+
+    add photo in the add post route
+
+ 
+ 
+ 
+ 
+ remanning work in the project
+
+
+ 

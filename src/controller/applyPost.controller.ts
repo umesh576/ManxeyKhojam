@@ -1,4 +1,4 @@
-import { IApplyUser } from "../@types/applyUser.types";
+// import { IApplyUser } from "../@types/applyUser.types";
 import customError from "../middleware/errroHandler.middleware";
 import ApplyPost from "../model/applyPost.model";
 import User from "../model/user.model";
@@ -21,14 +21,14 @@ export const applyPost = async (req: Request, res: Response) => {
     throw new customError("Please Register first for applying the post.", 400);
   }
 
-  const userDetails: IApplyUser = {
-    firsName: userApply.firstName,
-    lastName: userApply.lastName,
-    skill: userApply.skill,
-    phoneNumber: userApply.phoneNumber,
-    address: userApply.address,
-    email: userApply.email,
-  };
+  // const userDetails: IApplyUser = {
+  //   firsName: userApply.firstName,
+  //   lastName: userApply.lastName,
+  //   skill: userApply.skill,
+  //   phoneNumber: userApply.phoneNumber,
+  //   address: userApply.address,
+  //   email: userApply.email,
+  // };
 
   //if post  was already created not necessary just for checking
   if (
@@ -36,7 +36,7 @@ export const applyPost = async (req: Request, res: Response) => {
       (item: mongoose.Types.ObjectId) => item.toString() === postId
     )
   ) {
-    throw new customError("Product already in wishlist", 400);
+    throw new customError("Post already created.", 400);
   }
 
   userApply.appliedPost.push(new mongoose.Types.ObjectId(postId));
@@ -47,7 +47,7 @@ export const applyPost = async (req: Request, res: Response) => {
   res.status(200).json({
     status: true,
     statusCode: 200,
-    message: "Applied your form sucessfully.",
+    message: "Applied your post sucessfully.",
     data: userApply,
   });
 };
