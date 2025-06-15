@@ -119,7 +119,14 @@ export const delUser = async (req: Request, res: Response) => {
   if (!userId) {
     throw new customError("UserId required for delete user", 404);
   }
+
+  const isUser = await User.findOne({ userId });
+  if (!isUser) {
+    throw new customError("User not found", 404);
+  }
+
   const delUser = await User.findByIdAndDelete(userId);
+
   res.status(201).json({
     status: "sucess",
     statuCode: 201,
