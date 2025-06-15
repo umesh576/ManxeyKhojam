@@ -104,6 +104,12 @@ export const findOneUser = async (req: Request, res: Response) => {
   if (!userId) {
     throw new customError("UserId need for search single user", 404);
   }
+
+  const isUser = await User.findOne({ userId });
+  if (!isUser) {
+    throw new customError("User not found", 404);
+  }
+
   const user = await User.findById(userId);
   res.status(201).json({
     status: "sucess",
@@ -176,12 +182,21 @@ export const updateUser = async (req: Request, res: Response) => {
   if (!userMatch?.password) {
     throw new customError("password not avalible of user", 404);
   }
+  console.log(userMatch);
+
+  console.log(userMatch.id);
+
+  const checkValid = userMatch.id === userId;
+  if (!checkValid) {
+    throw new customError("User not Found", 404);
+  }
 
   const isUser = await compare(password, userMatch?.password);
 
   if (!isUser) {
     throw new customError("Password of the user not matched", 401);
   }
+
   const upadateUser = await User.findByIdAndUpdate(
     userId,
     {
