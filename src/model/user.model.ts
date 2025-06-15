@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose from "mongoose";
 import { Role } from "../@types/role.jobseeker";
 const emailRegex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
 
@@ -80,7 +80,12 @@ const jobSeeker = new mongoose.Schema(
         ref: "applyPost",
       },
     ],
+    createdOtp: {
+      type: Number,
+      required: false,
+    },
   },
+
   //this timesatmp can save the crated time date also sotre in the database
   { timestamps: true }
 );

@@ -1,5 +1,7 @@
  finished work are here
 
+    /* user section */
+
     jobseeker registeration
     jobseeker login
 
@@ -12,16 +14,31 @@
     update user
 
 
+    /*jobCategory section */
+
     create job category
     find jobCategory by id
     find all jobCategory
     delete jobCategory
+    update jobCategory
+
+    /* post section */
+
+
+
+
+    /* password section */
+
+
 
 
 
 pending work 
 
     add photo in the add post route
+
+    otp problem during changing password 
+    can't show the createotp on the database
 
  
  

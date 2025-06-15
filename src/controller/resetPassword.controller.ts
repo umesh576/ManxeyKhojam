@@ -21,7 +21,6 @@ export const resetPassword = async (req: Request, res: Response) => {
     throw new customError("something wrong", 404);
   }
   const user = await User.findOne({ email: userEmail });
-  console.log(user);
   if (!user) {
     throw new customError("user unable to find", 400);
   }
@@ -39,6 +38,8 @@ export const resetPassword = async (req: Request, res: Response) => {
     },
     { new: true }
   );
+
+  res.clearCookie("checkOtp");
 
   res.status(200).json({
     status: "sucess",

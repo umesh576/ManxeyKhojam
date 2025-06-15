@@ -1,8 +1,8 @@
 import customError from "../middleware/errroHandler.middleware";
 import { Request, Response } from "express";
 import User from "../model/user.model";
-import { sendOtp } from "../utils/sendForgetPin.utils";
 import { generateOtp } from "../utils/generateOtp.utils";
+import { sendOtp } from "../utils/sendForgetPin.utils";
 
 export const forgetPassword = async (req: Request, res: Response) => {
   try {
@@ -26,6 +26,14 @@ export const forgetPassword = async (req: Request, res: Response) => {
       subject: "Reset password pin",
       html,
     };
+
+    console.log(isUser._id);
+    const upOtUser = await User.findByIdAndUpdate(
+      isUser._id,
+      { createOtp: forgetPin },
+      { new: true }
+    );
+    console.log(upOtUser);
     await sendOtp(userDetails);
 
     const cookieData = {
