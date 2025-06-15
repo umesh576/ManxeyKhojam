@@ -12,6 +12,11 @@
     update user
 
 
+    create job category
+    find jobCategory by id
+    find all jobCategory
+    delete jobCategory
+
 
 
 pending work 

@@ -54,7 +54,7 @@ export const findJobById = async (req: Request, res: Response) => {
   });
 };
 
-export const delteJobCategory = async (req: Request, res: Response) => {
+export const deleteJobCategory = async (req: Request, res: Response) => {
   const { jobCategoryId } = req.body;
   if (!jobCategoryId) {
     throw new customError("please provide jobCategoryId", 400);
@@ -67,5 +67,25 @@ export const delteJobCategory = async (req: Request, res: Response) => {
     statuscode: 200,
     message: "Jobcategory can sucessfully deleted",
     data: delJobCategory,
+  });
+};
+
+export const updateJobCategory = async (req: Request, res: Response) => {
+  const jobCategoryId = req.body.id;
+  console.log(jobCategoryId);
+  const jobDetails = req.body;
+  if (!jobCategoryId) {
+    throw new customError("please provide jobCategoryId", 400);
+  }
+  const upJobCategory = await jobCategory.findByIdAndUpdate(
+    jobCategoryId,
+    jobDetails,
+    { new: true }
+  );
+  res.status(200).json({
+    status: "success",
+    statuscode: 200,
+    message: "jobCategory Updated sucessfully",
+    data: upJobCategory,
   });
 };
