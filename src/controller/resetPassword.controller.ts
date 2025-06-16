@@ -4,28 +4,41 @@ import User from "../model/user.model";
 import { hash } from "../utils/bcrypt.hash";
 
 export const resetPassword = async (req: Request, res: Response) => {
-  const storedData = JSON.parse(req.cookies.checkOtp);
-  console.log(storedData);
+  // const storedData = JSON.parse(req.cookies.checkOtp);
+  // console.log(storedData);
 
-  const storedOtp = parseInt(storedData.forgetPin);
-  const userEmail = storedData.email;
+  // const storedOtp = parseInt(storedData.forgetPin);
   const userEntOtp = parseInt(req.body.userOtp);
   const newPassword = req.body.password;
 
-  const isOtpOk = storedOtp === userEntOtp;
-  console.log(isOtpOk);
-  if (!isOtpOk) {
-    throw new customError("Your OTP is not matched.", 400);
-  }
+  const userEmail = await req.cookies.checkEmail;
+  // console.log(userEmail);
+
   if (!userEmail) {
-    throw new customError("something wrong", 404);
+    throw new customError("Email cannot found on the cookie.", 404);
   }
+
   const user = await User.findOne({ email: userEmail });
   if (!user) {
     throw new customError("user unable to find", 400);
   }
 
-  const userId = user._id.toString();
+  const storedOtp = user?.createdOtp;
+
+  // console.log(storedOtp);
+  if (!storedOtp) {
+    throw new customError("please check otp cannot send to the user.", 404);
+  }
+
+  const isOtpOk = storedOtp === userEntOtp;
+
+  // const isOtpOk = await User.findById();
+  // console.log(isOtpOk);
+  if (!isOtpOk) {
+    throw new customError("Your OTP is not matched.", 400);
+  }
+
+  const userId = user.id.toString();
   console.log(userId);
   if (!userId) {
     throw new customError("No User deceted for password reset", 400);
@@ -35,6 +48,7 @@ export const resetPassword = async (req: Request, res: Response) => {
     userId,
     {
       password: newHashPassword,
+      createdOtp: null,
     },
     { new: true }
   );
@@ -44,7 +58,7 @@ export const resetPassword = async (req: Request, res: Response) => {
   res.status(200).json({
     status: "sucess",
     statusCode: 200,
-    message: "nice man",
+    message: "password sucessfully updated",
     data: userUpdated,
   });
 };

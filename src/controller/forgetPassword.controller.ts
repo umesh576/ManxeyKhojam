@@ -36,16 +36,13 @@ export const forgetPassword = async (req: Request, res: Response) => {
     console.log(upOtUser);
     await sendOtp(userDetails);
 
-    const cookieData = {
-      email,
-    };
     // console.log(cookieData);
     res
-      .cookie("checkOtp", JSON.stringify(cookieData), {
+      .cookie("checkEmail", email, {
         httpOnly: true,
         secure: true,
         sameSite: "strict",
-        maxAge: 3600,
+        maxAge: 12000000,
       })
       .status(200)
       .json({
