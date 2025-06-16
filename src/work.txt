@@ -38,7 +38,7 @@ pending work
     add photo in the add post route
 
     otp problem during changing password 
-    can't show the createotp on the database
+    can't show the createotp on the database still have a same problem
 
  
  

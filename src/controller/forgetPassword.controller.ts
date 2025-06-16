@@ -27,10 +27,10 @@ export const forgetPassword = async (req: Request, res: Response) => {
       html,
     };
 
-    console.log(isUser._id);
+    console.log(isUser.id);
     const upOtUser = await User.findByIdAndUpdate(
-      isUser._id,
-      { createOtp: forgetPin },
+      isUser.id,
+      { createdOtp: forgetPin },
       { new: true }
     );
     console.log(upOtUser);
@@ -38,19 +38,18 @@ export const forgetPassword = async (req: Request, res: Response) => {
 
     const cookieData = {
       email,
-      forgetPin,
     };
-    console.log(cookieData);
+    // console.log(cookieData);
     res
       .cookie("checkOtp", JSON.stringify(cookieData), {
         httpOnly: true,
         secure: true,
         sameSite: "strict",
-        maxAge: 3600000,
+        maxAge: 3600,
       })
       .status(200)
       .json({
-        status: 200,
+        status: "success",
         statusCode: 200,
         message: "OTP can sucessfully send.",
         data: forgetPin,
