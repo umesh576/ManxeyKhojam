@@ -4,15 +4,10 @@ import User from "../model/user.model";
 import { hash } from "../utils/bcrypt.hash";
 
 export const resetPassword = async (req: Request, res: Response) => {
-  // const storedData = JSON.parse(req.cookies.checkOtp);
-  // console.log(storedData);
-
-  // const storedOtp = parseInt(storedData.forgetPin);
   const userEntOtp = parseInt(req.body.userOtp);
   const newPassword = req.body.password;
 
   const userEmail = await req.cookies.checkEmail;
-  // console.log(userEmail);
 
   if (!userEmail) {
     throw new customError("Email cannot found on the cookie.", 404);
@@ -25,15 +20,12 @@ export const resetPassword = async (req: Request, res: Response) => {
 
   const storedOtp = user?.createdOtp;
 
-  // console.log(storedOtp);
   if (!storedOtp) {
     throw new customError("please check otp cannot send to the user.", 404);
   }
 
   const isOtpOk = storedOtp === userEntOtp;
 
-  // const isOtpOk = await User.findById();
-  // console.log(isOtpOk);
   if (!isOtpOk) {
     throw new customError("Your OTP is not matched.", 400);
   }
