@@ -40,6 +40,13 @@ pending work
     add photo in the add post route
 
 
+    pagenination on all the search
+
+    search api
+
+    authencation part
+
+
  
  
  
