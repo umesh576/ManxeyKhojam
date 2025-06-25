@@ -1,5 +1,7 @@
 import express from "express";
 import cookieParser from "cookie-parser";
+import os from "os";
+import cluster from "cluster";
 
 import connectDatabase from "./config/database.config";
 
@@ -13,27 +15,39 @@ import appliedPostRoutes from "./routes/appliedPost.routes";
 import dotenv from "dotenv";
 dotenv.config();
 
-const app = express();
-const PORT = process.env.PORT || 4000;
+let noOfCpu = os.cpus().length;
 
-//for accesing the element store in the cookies
-app.use(cookieParser());
+if (cluster.isPrimary) {
+  for (let i = 0; i < noOfCpu; i++) {
+    cluster.fork();
+  }
+  cluster.on("exit", (worker, code, signal) => {
+    console.log(`Worker ${worker.process.pid} died. Restarting...`);
+    cluster.fork();
+  });
+} else {
+  const app = express();
+  const PORT = process.env.PORT || 4000;
 
-// accessing the path os database
-const DB_URI = process.env.DB_URI || "";
+  //for accesing the element store in the cookies
+  app.use(cookieParser());
 
-connectDatabase(DB_URI);
+  // accessing the path os database
+  const DB_URI = process.env.DB_URI || "";
 
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json()); // This parses JSON request bodies
+  connectDatabase(DB_URI);
 
-app.use("/api/user", userRoute);
-app.use("/api/jobcategory", jobCategory);
-app.use("/api/forget", passwordForget);
-app.use("/api/password", resetPassword);
-app.use("/api/post", postRoute);
-app.use("/api/applied", appliedPostRoutes);
+  app.use(express.urlencoded({ extended: true }));
+  app.use(express.json()); // This parses JSON request bodies
 
-app.listen(PORT, () => {
-  console.log(`server running at http://localhost:${PORT}`);
-});
+  app.use("/api/user", userRoute);
+  app.use("/api/jobcategory", jobCategory);
+  app.use("/api/forget", passwordForget);
+  app.use("/api/password", resetPassword);
+  app.use("/api/post", postRoute);
+  app.use("/api/applied", appliedPostRoutes);
+
+  app.listen(PORT, () => {
+    console.log(`server running at http://localhost:${PORT}`);
+  });
+}
