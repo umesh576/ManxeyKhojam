@@ -13,6 +13,8 @@ import postRoute from "./routes/post.routes";
 import appliedPostRoutes from "./routes/appliedPost.routes";
 
 import dotenv from "dotenv";
+
+import cors from "cors";
 dotenv.config();
 
 let noOfCpu = os.cpus().length;
@@ -31,6 +33,9 @@ if (cluster.isPrimary) {
 
   //for accesing the element store in the cookies
   app.use(cookieParser());
+
+  //
+  app.use(cors({ origin: "http://localhost:3000" }));
 
   // accessing the path os database
   const DB_URI = process.env.DB_URI || "";
