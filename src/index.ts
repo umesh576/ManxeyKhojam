@@ -35,7 +35,7 @@ if (cluster.isPrimary) {
   app.use(cookieParser());
 
   //
-  app.use(cors({ origin: "http://localhost:3000" }));
+  app.use(cors());
 
   // accessing the path os database
   const DB_URI = process.env.DB_URI || "";
