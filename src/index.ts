@@ -15,6 +15,8 @@ import appliedPostRoutes from "./routes/appliedPost.routes";
 import dotenv from "dotenv";
 
 import cors from "cors";
+const app = express();
+const PORT = process.env.PORT || 4000;
 dotenv.config();
 
 let noOfCpu = os.cpus().length;
@@ -28,9 +30,6 @@ if (cluster.isPrimary) {
     cluster.fork();
   });
 } else {
-  const app = express();
-  const PORT = process.env.PORT || 4000;
-
   //for accesing the element store in the cookies
   app.use(cookieParser());
 
