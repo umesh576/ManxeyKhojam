@@ -84,6 +84,10 @@ const jobSeeker = new mongoose.Schema(
       type: Number,
       required: false,
     },
+    profile: {
+      type: String,
+      required: true,
+    },
   },
 
   //this timesatmp can save the crated time date also sotre in the database

@@ -21,15 +21,15 @@ dotenv.config();
 
 let noOfCpu = os.cpus().length;
 
-if (cluster.isPrimary) {
-  for (let i = 0; i < noOfCpu; i++) {
-    cluster.fork();
-  }
-  cluster.on("exit", (worker, code, signal) => {
-    console.log(`Worker ${worker.process.pid} died. Restarting...`);
-    cluster.fork();
-  });
-} else {
+// if (cluster.isPrimary) {
+//   for (let i = 0; i < noOfCpu; i++) {
+//     cluster.fork();
+//   }
+//   cluster.on("exit", (worker, code, signal) => {
+//     console.log(`Worker ${worker.process.pid} died. Restarting...`);
+//     cluster.fork();
+//   });
+// } else {
   //for accesing the element store in the cookies
   app.use(cookieParser());
 
@@ -54,4 +54,4 @@ if (cluster.isPrimary) {
   app.listen(PORT, () => {
     console.log(`server running at http://localhost:${PORT}`);
   });
-}
+// }
