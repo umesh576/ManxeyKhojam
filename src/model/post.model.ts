@@ -26,9 +26,11 @@ const postSchema = new mongoose.Schema(
       required: false,
       // default: "Fresher also",
     },
-    picturePost: {
-      type: String,
-    },
+    picturePost: [
+      {
+        type: String,
+      },
+    ],
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

@@ -15,6 +15,7 @@ import { hash } from "../utils/bcrypt.hash";
 import { compare } from "bcrypt";
 import { generateToken } from "../utils/jwt.utils";
 import { Ipayload } from "../@types/role.jobseeker";
+import { checkUser } from "../middleware/checkUser.middleware";
 //api for the user registeriation
 export const registerUser = async (req: Request, res: Response) => {
   const body = req.body;
@@ -112,12 +113,8 @@ export const findOneUser = async (req: Request, res: Response) => {
     throw new customError("UserId need for search single user", 404);
   }
 
-  const isUser = await User.findOne({ userId });
-  if (!isUser) {
-    throw new customError("User not found", 404);
-  }
-
-  const user = await User.findById(userId);
+  const user = await checkUser(userId);
+  // const user = await User.findById(userId);
   res.status(201).json({
     status: "sucess",
     statuCode: 201,

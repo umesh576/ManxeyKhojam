@@ -1,38 +1,85 @@
 import { Request, Response } from "express";
 import customError from "../middleware/errroHandler.middleware";
 import Post from "../model/post.model";
-import User from "../model/user.model";
-import mongoose from "mongoose";
+// import mongoose from "mongoose";
+import { checkUser } from "../middleware/checkUser.middleware";
 
 //for creating post
+// export const createPost = async (req: Request, res: Response) => {
+//   const body = req.body;
+//   const files = req.files as { photos?: Express.Multer.File[] };
+//   console.log(body);
+
+//   if (Object.keys(body).length == 0) {
+//     throw new customError("All feild are empty. No post is done.", 400);
+//   }
+//   console.log(body);
+//   const { userId } = body;
+
+//   // const userPost = await User.findById(userId);
+//   // console.log(userPost);
+//   const userPost = await checkUser(userId);
+//   if (!userPost) {
+//     throw new customError("verify which user creating the post", 404);
+//   }
+
+//   userPost.createdPost.push(new mongoose.Types.ObjectId(userId));
+//   // Set profile path if file exists
+//   if (file) {
+//     body.picturePost = file.path;
+//   } else {
+//     throw new customError("Profile image is required", 400);
+//   }
+//   const newPost = await Post.create(body);
+
+//   res.status(200).json({
+//     sucess: true,
+//     message: "New post sucessfully created.",
+//     statusCode: 200,
+//     data: newPost,
+//   });
+// };
 export const createPost = async (req: Request, res: Response) => {
   const body = req.body;
-  console.log(body);
+  const files = req.files as { photos?: Express.Multer.File[] }; // Type assertion for TypeScript
 
-  if (Object.keys(body).length == 0) {
-    throw new customError("All feild are empty. No post is done.", 400);
+  // Validate required fields
+  if (!body.title || !body.description) {
+    throw new customError("Title and description are required", 400);
   }
-  console.log(body);
+
   const { userId } = body;
 
-  const userPost = await User.findById(userId);
-  console.log(userPost);
-
-  if (!userPost) {
-    throw new customError("verify which user creating the post", 404);
+  // Verify user exists
+  const user = await checkUser(userId);
+  if (!user) {
+    throw new customError("User not found", 404);
   }
 
-  userPost.createdPost.push(new mongoose.Types.ObjectId(userId));
-  const newPost = await Post.create(body);
+  // Process files
+  // Process files (optional)
+  let picturePaths: string[] = [];
+  if (files?.photos && files.photos.length > 0) {
+    picturePaths = files.photos.map((file) => file.path);
+  }
 
-  res.status(200).json({
-    sucess: true,
-    message: "New post sucessfully created.",
-    statusCode: 200,
+  // Create post
+  const newPost = await Post.create({
+    ...body,
+    pictures: picturePaths,
+    user: userId,
+  });
+  /*
+  // Update user's createdPosts (correct way)
+  // user.createdPost.push(newPost._id);
+  // await user.save();*/
+
+  res.status(201).json({
+    success: true,
+    message: "Post successfully created",
     data: newPost,
   });
 };
-
 //for GetAll post
 export const getAllPost = async (req: Request, res: Response) => {
   const allPost = await Post.find();
