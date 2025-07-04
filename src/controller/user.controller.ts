@@ -15,10 +15,11 @@ import { hash } from "../utils/bcrypt.hash";
 import { compare } from "bcrypt";
 import { generateToken } from "../utils/jwt.utils";
 import { Ipayload } from "../@types/role.jobseeker";
-
 //api for the user registeriation
 export const registerUser = async (req: Request, res: Response) => {
   const body = req.body;
+  const file = req.file;
+
   console.log(body);
   if (!body.firstName) {
     throw new customError("Firstname is Required", 404);
@@ -34,6 +35,12 @@ export const registerUser = async (req: Request, res: Response) => {
   }
   const hashPassword = await hash(body.password);
   body.password = hashPassword;
+
+  if (file) {
+    body.profile = file.path;
+  } else {
+    throw new customError("Profile image is required", 400);
+  }
   const alreadyExist = await User.findOne({ email: body.email });
   if (alreadyExist) {
     throw new customError("Email is already exist", 404);
