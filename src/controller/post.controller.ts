@@ -3,6 +3,7 @@ import customError from "../middleware/errroHandler.middleware";
 import Post from "../model/post.model";
 // import mongoose from "mongoose";
 import { checkUser } from "../middleware/checkUser.middleware";
+import User from "../model/employer.model";
 
 //for creating post
 // export const createPost = async (req: Request, res: Response) => {
@@ -73,6 +74,12 @@ export const createPost = async (req: Request, res: Response) => {
   // Update user's createdPosts (correct way)
   // user.createdPost.push(newPost._id);
   // await user.save();*/
+  const userUpdate = await User.findByIdAndUpdate(
+    userId,
+    { createdPost: newPost },
+    { user }
+  );
+  console.log("user update sucessfully", userUpdate);
 
   res.status(201).json({
     success: true,

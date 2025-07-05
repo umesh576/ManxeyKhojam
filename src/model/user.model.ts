@@ -86,7 +86,6 @@ const jobSeeker = new mongoose.Schema(
     },
     profile: {
       type: String,
-      required:[ true, 'profile is required'],
     },
   },
 

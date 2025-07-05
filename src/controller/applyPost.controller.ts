@@ -1,8 +1,9 @@
 // import { IApplyUser } from "../@types/applyUser.types";
+import { checkPostCreatedUser } from "../middleware/checkPostCreatedUser";
 import customError from "../middleware/errroHandler.middleware";
 import ApplyPost from "../model/applyPost.model";
 import User from "../model/user.model";
-import mongoose from "mongoose";
+// import mongoose from "mongoose";
 import { Request, Response } from "express";
 
 //apply post remmaning
@@ -15,11 +16,15 @@ export const applyPost = async (req: Request, res: Response) => {
     throw new customError("Please verify who you are apply in this post.", 400);
   }
 
-  const userApply = await User.findById(userId);
+  // const userApply = await User.findById(userId);
 
-  if (!userApply) {
-    throw new customError("Please Register first for applying the post.", 400);
-  }
+  // if (!userApply) {
+  //   throw new customError("Please Register first for applying the post.", 400);
+  // }
+  // console.log(userApply);
+
+  const isUserCreated = checkPostCreatedUser(userId, postId);
+  // console.log(isUserCreated);
 
   // const userDetails: IApplyUser = {
   //   firsName: userApply.firstName,
@@ -31,16 +36,16 @@ export const applyPost = async (req: Request, res: Response) => {
   // };
 
   //if post  was already created not necessary just for checking
-  if (
-    userApply.appliedPost.some(
-      (item: mongoose.Types.ObjectId) => item.toString() === postId
-    )
-  ) {
-    throw new customError("Post already created.", 400);
-  }
+  // if (
+  //   userApply.appliedPost.some(
+  //     (item: mongoose.Types.ObjectId) => item.toString() === postId
+  //   )
+  // ) {
+  //   throw new customError("Post already created.", 400);
+  // }
 
-  userApply.appliedPost.push(new mongoose.Types.ObjectId(postId));
-  await userApply.save();
+  // userApply.appliedPost.push(new mongoose.Types.ObjectId(postId));
+  // await userApply.save();
 
   // const appPost = await ApplyPost.create({ userId, postId, userDetails });
 
@@ -48,7 +53,7 @@ export const applyPost = async (req: Request, res: Response) => {
     status: true,
     statusCode: 200,
     message: "Applied your post sucessfully.",
-    data: userApply,
+    data: isUserCreated,
   });
 };
 
