@@ -8,7 +8,7 @@ const applyOnPostSchema = new mongoose.Schema(
     },
     userId: {
       type: mongoose.Types.ObjectId,
-      required: [true, "userId required fro validate user"],
+      required: [true, "userId required for validate user"],
     },
     resume: {
       type: String,
@@ -21,12 +21,10 @@ const applyOnPostSchema = new mongoose.Schema(
     firstName: {
       type: String,
       required: [true, "Firstname is required"],
-      maxLength: [3, "Firstname is more than three letter."],
     },
     lastname: {
       type: String,
       required: [true, "lastname is required"],
-      maxLength: [3, "Firstname is more than three letter."],
     },
     postId: {
       type: mongoose.Types.ObjectId,
