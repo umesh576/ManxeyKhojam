@@ -3,7 +3,7 @@ import customError from "../middleware/errroHandler.middleware";
 import Post from "../model/post.model";
 // import mongoose from "mongoose";
 import { checkUser } from "../middleware/checkUser.middleware";
-import User from "../model/employer.model";
+// import User from "../model/employer.model";
 
 //for creating post
 // export const createPost = async (req: Request, res: Response) => {
