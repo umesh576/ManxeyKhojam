@@ -12,15 +12,15 @@ const transporter = nodemailer.createTransport({
 interface IsendMail {
   to: string;
   subject: string;
-  html: string;
+  html2: string;
 }
-export const sendEmailOnAppliedPost = async (sendMail: IsendMail) => {
+export const sendReceiveApplyOnPostEmail = async (sendMail: IsendMail) => {
   try {
     const mailOption = {
       from: `"${process.env.MAIL_FROM}"<${process.env.SMPT_MAIL}>`,
       to: sendMail.to,
       subject: sendMail.subject, // Fixed typo
-      html: sendMail.html,
+      html: sendMail.html2,
     };
 
     await transporter.sendMail(mailOption);

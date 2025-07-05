@@ -27,7 +27,6 @@ export const forgetPassword = async (req: Request, res: Response) => {
       html,
     };
 
-    console.log(isUser.id);
     const upOtUser = await User.findByIdAndUpdate(
       isUser.id,
       { createdOtp: forgetPin },

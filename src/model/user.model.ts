@@ -87,6 +87,12 @@ const jobSeeker = new mongoose.Schema(
     profile: {
       type: String,
     },
+    appliedOnPost: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "AppliedOnPost",
+      },
+    ],
   },
 
   //this timesatmp can save the crated time date also sotre in the database

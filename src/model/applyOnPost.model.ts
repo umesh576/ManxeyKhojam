@@ -28,6 +28,10 @@ const applyOnPostSchema = new mongoose.Schema(
       required: [true, "lastname is required"],
       maxLength: [3, "Firstname is more than three letter."],
     },
+    postId: {
+      type: mongoose.Types.ObjectId,
+      required: [true, "post id is necessary for verify post."],
+    },
   },
   { timestamps: true }
 );

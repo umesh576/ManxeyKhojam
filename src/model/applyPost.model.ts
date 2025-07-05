@@ -10,6 +10,7 @@ const applyPostSchema = new mongoose.Schema(
     postId: {
       type: Schema.Types.ObjectId,
       required: [true, "Verify In which post is applying."],
+      ref: "Post",
     },
     postDetails: [
       {
@@ -17,6 +18,14 @@ const applyPostSchema = new mongoose.Schema(
         required: true,
       },
     ],
+    aapliedPeople: {
+      type: mongoose.Types.ObjectId,
+      ref: "User",
+    },
+    linkdenProfile: {
+      type: String,
+      required: false,
+    },
   },
   { timestamps: true }
 );
