@@ -42,6 +42,11 @@ const postSchema = new mongoose.Schema(
         ref: "User",
       },
     ],
+    jobCategory: {
+      type: mongoose.Types.ObjectId,
+      required: [true, "please provide jobcategory"],
+      ref: "jobCategory",
+    },
   },
   { timestamps: true }
 );
