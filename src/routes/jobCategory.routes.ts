@@ -6,13 +6,15 @@ import {
   findJobById,
   updateJobCategory,
 } from "../controller/jobCategory.controller";
+import { Authenticate } from "../middleware/authentication.middleware";
+import { admin } from "../@types/role.jobseeker";
 
 const server = Router();
 
 server.post("/jcategory", createJobcategory);
 server.get("/getJobCategory", findJob);
-server.get("/getJobCategoryById", findJobById);
-server.delete("/delJobCategory", deleteJobCategory);
-server.put("/updateJobCategory", updateJobCategory);
+server.get("/getJobCategoryById", Authenticate(admin), findJobById);
+server.delete("/delJobCategory", Authenticate(admin), deleteJobCategory);
+server.put("/updateJobCategory", Authenticate(admin), updateJobCategory);
 
 export default server;

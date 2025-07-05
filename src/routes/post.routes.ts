@@ -7,6 +7,8 @@ import {
   updatePost,
 } from "../controller/post.controller";
 import multer from "multer";
+import { Authenticate } from "../middleware/authentication.middleware";
+import { admin } from "../@types/role.jobseeker";
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -27,6 +29,6 @@ server.post("/add", upload.any(), createPost);
 server.delete("/delPost", deletePost);
 server.patch("/update", updatePost);
 server.get("/seeAll", getAllPost);
-server.get("/seeOne", getPostById);
+server.get("/seeOne", Authenticate(admin), getPostById);
 
 export default server;
