@@ -11,6 +11,7 @@ import passwordForget from "./routes/forgetPassword.routes";
 import resetPassword from "./routes/resetPassword.routes";
 import postRoute from "./routes/post.routes";
 import appliedPostRoutes from "./routes/appliedPost.routes";
+import appliedOnPost from "./routes/appliedOnPost.routes";
 
 import dotenv from "dotenv";
 
@@ -50,6 +51,7 @@ app.use("/api/forget", passwordForget);
 app.use("/api/password", resetPassword);
 app.use("/api/post", postRoute);
 app.use("/api/applied", appliedPostRoutes);
+app.use("/api/applypost", appliedOnPost);
 
 app.listen(PORT, () => {
   console.log(`server running at http://localhost:${PORT}`);

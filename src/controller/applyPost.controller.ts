@@ -2,9 +2,11 @@
 import { checkPostCreatedUser } from "../middleware/checkPostCreatedUser";
 import customError from "../middleware/errroHandler.middleware";
 import ApplyPost from "../model/applyPost.model";
-import User from "../model/user.model";
+// import User from "../model/user.model";
 // import mongoose from "mongoose";
 import { Request, Response } from "express";
+import User from "../model/user.model";
+import Post from "../model/post.model";
 
 //apply post remmaning
 export const applyPost = async (req: Request, res: Response) => {
@@ -16,44 +18,36 @@ export const applyPost = async (req: Request, res: Response) => {
     throw new customError("Please verify who you are apply in this post.", 400);
   }
 
-  // const userApply = await User.findById(userId);
-
-  // if (!userApply) {
-  //   throw new customError("Please Register first for applying the post.", 400);
-  // }
-  // console.log(userApply);
-
+  // check the post was created by userr or not
   const isUserCreated = checkPostCreatedUser(userId, postId);
-  // console.log(isUserCreated);
+  if (!isUserCreated) {
+    throw new customError("User cannot create this post", 404);
+  }
 
-  // const userDetails: IApplyUser = {
-  //   firsName: userApply.firstName,
-  //   lastName: userApply.lastName,
-  //   skill: userApply.skill,
-  //   phoneNumber: userApply.phoneNumber,
-  //   address: userApply.address,
-  //   email: userApply.email,
-  // };
+  // find post for post detalils
+  const applingPost = await Post.findById(postId);
+  const user = await User.findById(userId);
 
-  //if post  was already created not necessary just for checking
-  // if (
-  //   userApply.appliedPost.some(
-  //     (item: mongoose.Types.ObjectId) => item.toString() === postId
-  //   )
-  // ) {
-  //   throw new customError("Post already created.", 400);
-  // }
+  // create a applypost
+  const appPosDet = {
+    userId: userId,
+    postId: postId,
+    postDetails: applingPost,
+  };
+  const appPost = await ApplyPost.create(appPosDet);
 
-  // userApply.appliedPost.push(new mongoose.Types.ObjectId(postId));
-  // await userApply.save();
+  // add applied post in the user details
+  user?.appliedPost.push(appPost._id);
 
-  // const appPost = await ApplyPost.create({ userId, postId, userDetails });
+  //remove created post from user details
+  user?.createdPost.pop();
+  await user?.save();
 
   res.status(200).json({
     status: true,
     statusCode: 200,
     message: "Applied your post sucessfully.",
-    data: isUserCreated,
+    data: appPost,
   });
 };
 

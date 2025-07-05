@@ -70,16 +70,12 @@ export const createPost = async (req: Request, res: Response) => {
     pictures: picturePaths,
     user: userId,
   });
-  /*
-  // Update user's createdPosts (correct way)
-  // user.createdPost.push(newPost._id);
-  // await user.save();*/
-  const userUpdate = await User.findByIdAndUpdate(
-    userId,
-    { createdPost: newPost },
-    { user }
-  );
-  console.log("user update sucessfully", userUpdate);
+
+  //Update user's createdPosts (correct way)
+  user.createdPost.push(newPost._id);
+  await user.save();
+
+  // console.log("user update sucessfully", userUpdate);
 
   res.status(201).json({
     success: true,

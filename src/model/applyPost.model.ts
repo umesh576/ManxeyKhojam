@@ -11,6 +11,12 @@ const applyPostSchema = new mongoose.Schema(
       type: Schema.Types.ObjectId,
       required: [true, "Verify In which post is applying."],
     },
+    postDetails: [
+      {
+        type: String,
+        required: true,
+      },
+    ],
   },
   { timestamps: true }
 );
