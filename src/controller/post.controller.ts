@@ -3,6 +3,7 @@ import customError from "../middleware/errroHandler.middleware";
 import Post from "../model/post.model";
 // import mongoose from "mongoose";
 import { checkUser } from "../middleware/checkUser.middleware";
+import { deleteFiles } from "../utils/deleteFile";
 // import User from "../model/employer.model";
 
 //for creating post
@@ -102,6 +103,10 @@ export const deletePost = async (req: Request, res: Response) => {
     throw new customError("please conform Which post to delete", 400);
   }
 
+  const post = await Post.findById(postId);
+  if (post?.picturePost && post.picturePost.length > 0) {
+    await deleteFiles(post.picturePost as string[]);
+  }
   const delPost = await Post.findByIdAndDelete(postId);
 
   res.status(200).json({
