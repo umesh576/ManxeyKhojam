@@ -16,45 +16,62 @@ import { compare } from "bcrypt";
 import { generateToken } from "../utils/jwt.utils";
 import { Ipayload } from "../@types/role.jobseeker";
 import { checkUser } from "../middleware/checkUser.middleware";
+import fs from "fs/promises";
+
 //api for the user registeriation
 export const registerUser = async (req: Request, res: Response) => {
-  const body = req.body;
-  const file = req.file;
+  try {
+    // ... registration logic ...
 
-  console.log(body);
-  if (!body.firstName) {
-    throw new customError("Firstname is Required", 404);
-  }
-  if (!body.lastName) {
-    throw new customError("Username is Required", 404);
-  }
-  if (!body.password) {
-    throw new customError("Password is Required", 404);
-  }
-  if (!body.email) {
-    throw new customError("Email is Required", 404);
-  }
-  const hashPassword = await hash(body.password);
-  body.password = hashPassword;
+    const body = req.body;
+    const file = req.file;
 
-  if (file) {
-    body.profile = file.path;
-  } else {
-    throw new customError("Profile image is required", 400);
-  }
-  const alreadyExist = await User.findOne({ email: body.email });
-  if (alreadyExist) {
-    throw new customError("Email is already exist", 404);
-  }
-  const user = await User.create(body);
+    console.log(body);
+    if (!body.firstName) {
+      throw new customError("Firstname is Required", 404);
+    }
+    if (!body.lastName) {
+      throw new customError("Username is Required", 404);
+    }
+    if (!body.password) {
+      throw new customError("Password is Required", 404);
+    }
+    if (!body.email) {
+      throw new customError("Email is Required", 404);
+    }
+    const alreadyExist = await User.findOne({ email: body.email });
+    if (alreadyExist) {
+      throw new customError("Email is already exist", 404);
+    }
+    const hashPassword = await hash(body.password);
+    body.password = hashPassword;
 
-  res.status(201).json({
-    message: "User restered sucessfully",
-    status: "sucess",
-    statusCode: 200,
-    sucess: true,
-    data: user,
-  });
+    if (file) {
+      body.profile = file.path;
+    } else {
+      throw new customError("Profile image is required", 400);
+    }
+
+    // Handle file upload
+    if (file) {
+      body.profile = file.path; // Consider storing just the filename
+    } else {
+      throw new customError("Profile image is required", 400);
+    }
+
+    const user = await User.create(body);
+
+    res.status(201).json({
+      message: "User restered sucessfully",
+      status: "sucess",
+      statusCode: 200,
+      sucess: true,
+      data: user,
+    });
+  } catch (error) {
+    if (req.file) await fs.unlink(req.file.path); // Delete uploaded file
+    next(error);
+  }
 };
 
 //api for the login user
@@ -195,7 +212,7 @@ export const updateUser = async (req: Request, res: Response) => {
     throw new customError("User not Found", 404);
   }
 
-  const isUser = await compare(password, userMatch?.password);
+  const isUser = compare(password, userMatch?.password);
 
   if (!isUser) {
     throw new customError("Password of the user not matched", 401);
@@ -220,3 +237,6 @@ export const updateUser = async (req: Request, res: Response) => {
     data: upadateUser,
   });
 };
+function next(error: unknown) {
+  throw new Error("Function not implemented.");
+}

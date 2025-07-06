@@ -41,6 +41,7 @@ app.use(cors());
 const DB_URI = process.env.DB_URI || "";
 
 connectDatabase(DB_URI);
+app.use("/uploads", express.static("uploads"));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json()); // This parses JSON request bodies

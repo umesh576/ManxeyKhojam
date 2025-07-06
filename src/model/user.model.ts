@@ -35,8 +35,8 @@ const jobSeeker = new mongoose.Schema(
       type: Number,
       required: [true, "Phonenumber required for the register."],
 
-      minLength: [3, "Phonenumber must be longer than 3 character"],
-      maxLength: [20, "Phonenumber must be small than the 20 letter"],
+      min: [1000000000, "Phone number must be at least 10 digits"], // Example for 10-digit numbers
+      max: [9999999999, "Phone number must be at most 10 digits"],
     },
     role: {
       type: String,
