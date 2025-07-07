@@ -9,15 +9,6 @@ import Post from "../model/post.model";
 export const applyOnpost = async (req: Request, res: Response) => {
   const body = req.body;
   console.log(body);
-  // if (!body.userId) {
-  //   throw new customError("Userid need for the validate user", 400);
-  // }
-  // if (!body.postId) {
-  //   throw new customError("PostId required for verify post.", 400);
-  // }
-  // if (!body.experience || !body.resume || !body.firstName || !body.lastname) {
-  //   throw new customError("Please provide the all details", 400);
-  // }
   if (
     !body.userId ||
     !body.postId ||

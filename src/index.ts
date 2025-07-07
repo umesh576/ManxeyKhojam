@@ -12,6 +12,7 @@ import resetPassword from "./routes/resetPassword.routes";
 import postRoute from "./routes/post.routes";
 import appliedPostRoutes from "./routes/appliedPost.routes";
 import appliedOnPost from "./routes/appliedOnPost.routes";
+import path from "path";
 
 import dotenv from "dotenv";
 
@@ -45,6 +46,7 @@ app.use("/uploads", express.static("uploads"));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json()); // This parses JSON request bodies
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use("/api/user", userRoute);
 app.use("/api/jobcategory", jobCategory);
