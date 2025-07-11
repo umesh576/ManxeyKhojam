@@ -16,5 +16,5 @@ export interface Ipayload {
   _id: mongoose.Types.ObjectId;
   firstName: String;
   lastName: String;
-  role?: Role;
+  role: Role;
 }

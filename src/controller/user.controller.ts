@@ -14,7 +14,7 @@ import customError from "../middleware/errroHandler.middleware";
 import { hash } from "../utils/bcrypt.hash";
 import { compare } from "bcrypt";
 import { generateToken } from "../utils/jwt.utils";
-import { Ipayload } from "../@types/role.jobseeker";
+import { Ipayload, Role } from "../@types/role.jobseeker";
 import { checkUser } from "../middleware/checkUser.middleware";
 import fs from "fs/promises";
 
@@ -90,7 +90,7 @@ export const login = async (req: Request, res: Response) => {
     throw new customError("User can't find", 404);
   }
 
-  const isUser = await compare(password, user.password);
+  const isUser = await compare(password, user.password as string);
 
   if (!isUser) {
     throw new customError("User cannot found", 404);
@@ -98,9 +98,9 @@ export const login = async (req: Request, res: Response) => {
 
   const payload: Ipayload = {
     _id: user._id,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    role: user.role,
+    firstName: user.firstName as string,
+    lastName: user.lastName as string,
+    role: user.role as Role,
   };
   const jwtToken = generateToken(payload);
   console.log(jwtToken);
@@ -187,38 +187,38 @@ export const updateUser = async (req: Request, res: Response) => {
   } = req.body;
 
   if (!userId) {
-    throw new customError("Please provide the user detail for delete", 404);
+    throw new customError("Please provide the user detail for update", 404);
   }
 
   if (!email) {
-    throw new customError("Please provide the user email for delete", 404);
+    throw new customError("Please provide the user email for update", 404);
   }
 
   if (!password) {
-    throw new customError("Please provide the user password for delete", 404);
+    throw new customError("Please provide the user password for update", 404);
   }
 
   const userMatch = await User.findOne({ email });
 
-  if (!userMatch?.password) {
-    throw new customError("password not avalible of user", 404);
+  if (!userMatch) {
+    throw new customError("User not found", 404);
   }
-  console.log(userMatch);
 
-  console.log(userMatch.id);
+  if (!userMatch.password) {
+    throw new customError("Password not available for user", 404);
+  }
 
-  const checkValid = userMatch.id === userId;
-  if (!checkValid) {
+  if (userMatch.id !== userId) {
     throw new customError("User not Found", 404);
   }
 
-  const isUser = compare(password, userMatch?.password);
+  const isUser = await compare(password, userMatch.password as string);
 
   if (!isUser) {
     throw new customError("Password of the user not matched", 401);
   }
 
-  const upadateUser = await User.findByIdAndUpdate(
+  const updatedUser = await User.findByIdAndUpdate(
     userId,
     {
       firstName,
@@ -231,12 +231,13 @@ export const updateUser = async (req: Request, res: Response) => {
   );
 
   res.status(201).json({
-    status: "sucess",
-    statuCode: 201,
-    message: "User updated sucessfully",
-    data: upadateUser,
+    status: "success",
+    statusCode: 201,
+    message: "User updated successfully",
+    data: updatedUser,
   });
 };
+
 function next(error: unknown) {
   throw new Error("Function not implemented.");
 }
