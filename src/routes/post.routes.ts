@@ -30,6 +30,5 @@ server.delete("/delPost", deletePost);
 server.patch("/update", updatePost);
 server.get("/seeAll", getAllPost);
 server.get("/:postId", getPostById);
-// server.get("/:postId/", getPostById);
 
 export default server;

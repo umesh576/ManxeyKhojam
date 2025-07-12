@@ -107,10 +107,11 @@ export const login = async (req: Request, res: Response) => {
 
   res
     .cookie("access_token", jwtToken, {
-      httpOnly: true,
-      secure: false,
-      sameSite: "none",
-      maxAge: 3600000,
+      httpOnly: true, // Prevent JavaScript access (always recommended)
+      secure: process.env.NODE_ENV === "production", // HTTPS only in production
+      sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax", // CSRF protection
+      maxAge: 3600000, // 1 hour expiry
+      // domain: process.env.NODE_ENV === "production" ? ".yourdomain.com" : undefined,
     })
     .status(200)
     .json({
