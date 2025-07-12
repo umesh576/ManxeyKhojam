@@ -10,14 +10,18 @@ const applyOnPostSchema = new mongoose.Schema(
       type: mongoose.Types.ObjectId,
       required: [true, "userId required for validate user"],
     },
-    resume: {
-      type: String,
-      required: [true, "resume required for true"],
-    },
-    coverLetter: {
-      type: String,
-      maxLength: 10,
-    },
+    resume: [
+      {
+        type: String,
+        required: [true, "resume required for true"],
+      },
+    ],
+    coverLetter: [
+      {
+        type: String,
+        maxLength: 10,
+      },
+    ],
     firstName: {
       type: String,
       required: [true, "Firstname is required"],

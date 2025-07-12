@@ -8,12 +8,22 @@ import Post from "../model/post.model";
 
 export const applyOnpost = async (req: Request, res: Response) => {
   const body = req.body;
-  console.log(body);
+  const files = req.files as {
+    coverLetter: Express.Multer.File[];
+    resume: Express.Multer.File[]; // optional if used
+  };
+  // const resume = req.files["resume"].[0];
+  const coverLetter = files.coverLetter[0];
+  const resume = files.resume[0];
+
+  if (!coverLetter || !resume) {
+    throw new customError("coverLetter and resume needed", 404);
+  }
+  // console.log(body);
   if (
     !body.userId ||
     !body.postId ||
     !body.experience ||
-    !body.resume ||
     !body.firstName ||
     !body.lastname
   ) {

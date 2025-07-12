@@ -11,13 +11,18 @@
 import { Router } from "express";
 import { Request, Response } from "express";
 // import { Authenticate } from "../middleware/authentication.middleware";
+// import { jobSeeker } from "../@types/role.jobseeker";
+// import { Authenticate } from "../middleware/authentication.middleware";
 
 const router = Router();
 
 // Add this new route
-router.get("/check", (req: Request, res: Response) => {
-  const user = req.user;
-  res.status(200).json({ authenticated: true, user });
-});
+router.get(
+  "/check",
+  /*Authenticate(jobSeeker),*/ (req: Request, res: Response) => {
+    const user = req.user;
+    res.status(200).json({ authenticated: true, user });
+  }
+);
 
 export default router;
