@@ -106,19 +106,20 @@ export const login = async (req: Request, res: Response) => {
   console.log(jwtToken);
 
   res
-    .cookie("acess_token", jwtToken, {
+    .cookie("access_token", jwtToken, {
       httpOnly: true,
-      secure: true,
-      sameSite: "strict",
+      secure: false,
+      sameSite: "none",
       maxAge: 3600000,
     })
     .status(200)
     .json({
-      status: "sucess",
+      status: "success",
       statusCode: 201,
-      message: "User login sucessfully",
+      message: "User login successfully",
       data: user,
       token: jwtToken,
+      domain: "localhost",
     });
 };
 

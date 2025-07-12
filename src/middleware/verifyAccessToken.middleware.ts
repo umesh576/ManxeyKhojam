@@ -7,7 +7,7 @@ export const verifyJWtToken = (
   res: Response,
   next: NextFunction
 ) => {
-  const token = req.cookies.acess_token;
+  const token = req.cookies.access_token;
 
   if (!token) {
     res.status(401).json({ message: "Unauthorized" });

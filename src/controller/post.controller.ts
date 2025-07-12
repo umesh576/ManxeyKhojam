@@ -149,15 +149,43 @@ export const updatePost = async (req: Request, res: Response) => {
   }
 };
 
-//get post by id use in frontend if needed
+// //get post by id use in frontend if needed
+// export const getPostById = async (req: Request, res: Response) => {
+//   const { postId } = req.params;
+//   if (!postId) {
+//     return res.status(400).json({ message: "Post ID is required" });
+//   }
+
+//   try {
+//     const upPost = await Post.findById(postId);
+
+//     if (!upPost) {
+//       return res.status(404).json({ message: "Post not found" });
+//     }
+
+//     res.status(200).json({
+//       status: "success",
+//       success: true,
+//       statusCode: 200,
+//       data: upPost,
+//     });
+//   } catch (error) {
+//     res.status(500).json({ message: "Server error", error });
+//   }
+// };
 export const getPostById = async (req: Request, res: Response) => {
-  const { postId } = req.body;
+  const { postId } = req.params;
   if (!postId) {
-    throw new customError("post Invalid!", 404);
+    return res.status(400).json({ message: "Post ID is required" });
   }
   const upPost = await Post.findById(postId);
+
+  if (!upPost) {
+    return res.status(404).json({ message: "Post not found" });
+  }
+
   res.status(200).json({
-    status: "sucess",
+    status: "success",
     success: true,
     statusCode: 200,
     data: upPost,

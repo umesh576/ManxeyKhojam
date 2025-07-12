@@ -37,7 +37,12 @@ dotenv.config();
 app.use(cookieParser());
 
 //
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000", // your frontend origin
+    credentials: true, // 🔑 allow cookies to be sent
+  })
+);
 
 // accessing the path os database
 const DB_URI = process.env.DB_URI || "";

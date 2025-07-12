@@ -3,12 +3,12 @@ import {
   createPost,
   deletePost,
   getAllPost,
-  getPostById,
   updatePost,
 } from "../controller/post.controller";
+import { getPostById } from "../controller/post.controller";
 import multer from "multer";
-import { Authenticate } from "../middleware/authentication.middleware";
-import { admin } from "../@types/role.jobseeker";
+// import { Authenticate } from "../middleware/authentication.middleware";
+// import { jobSeeker } from "../@types/role.jobseeker";
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -29,6 +29,7 @@ server.post("/add", upload.any(), createPost);
 server.delete("/delPost", deletePost);
 server.patch("/update", updatePost);
 server.get("/seeAll", getAllPost);
-server.get("/seeOne", Authenticate(admin), getPostById);
+server.get("/:postId", getPostById);
+// server.get("/:postId/", getPostById);
 
 export default server;
