@@ -6,7 +6,7 @@ import multer from "multer";
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "/tmp/my-uploads");
+    cb(null, "uploads");
   },
   filename: function (req, file, cb) {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
@@ -14,10 +14,13 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({
+  storage,
+  limits: { fileSize: 5 * 1024 * 1024 },
+});
 const uploadMiddleware = upload.fields([
   { name: "resume", maxCount: 1 },
-  { name: "coverLetter", maxCount: 8 },
+  { name: "coverLetter", maxCount: 1 },
 ]);
 
 const server = Router();

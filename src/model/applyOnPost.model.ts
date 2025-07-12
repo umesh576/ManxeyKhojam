@@ -19,7 +19,6 @@ const applyOnPostSchema = new mongoose.Schema(
     coverLetter: [
       {
         type: String,
-        maxLength: 10,
       },
     ],
     firstName: {

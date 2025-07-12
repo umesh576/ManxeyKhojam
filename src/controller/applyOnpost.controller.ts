@@ -8,17 +8,19 @@ import Post from "../model/post.model";
 
 export const applyOnpost = async (req: Request, res: Response) => {
   const body = req.body;
-  const files = req.files as {
+  const files = req.files as Partial<{
     coverLetter: Express.Multer.File[];
-    resume: Express.Multer.File[]; // optional if used
-  };
+    resume: Express.Multer.File[];
+  }>;
   // const resume = req.files["resume"].[0];
-  const coverLetter = files.coverLetter[0];
-  const resume = files.resume[0];
+  const coverLetter = files.coverLetter?.[0];
+  const resume = files.resume?.[0];
 
   if (!coverLetter || !resume) {
     throw new customError("coverLetter and resume needed", 404);
   }
+  body.resume = [resume.path]; // Store file path in DB
+  body.coverLetter = [coverLetter.path];
   // console.log(body);
   if (
     !body.userId ||
@@ -31,7 +33,8 @@ export const applyOnpost = async (req: Request, res: Response) => {
   }
 
   //user for admin for see who can applies
-  const userAppliedDetails = AppliedOnPost.create(body);
+  const userAppliedDetails = await AppliedOnPost.create(body);
+  console.log(userAppliedDetails);
 
   // check who cna applying on the post and update the user schema
   const user = await User.findById(body.userId);
@@ -44,10 +47,11 @@ export const applyOnpost = async (req: Request, res: Response) => {
   await post?.save();
 
   // send email details to user after user applied on post
-  const html = `<h1>You can applied post sucessfully.</h1><br><p>Recuiter will reach you after verification your details.</p>`;
+  const html = ` <h1>You have successfully applied for the post.</h1>
+  <p>The recruiter will reach out after verifying your details.</p> `;
   const userContent = {
     to: String(user?.email),
-    subject: "Reset password pin",
+    subject: "Job Application Confirmation",
     html,
   };
 

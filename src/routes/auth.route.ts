@@ -19,9 +19,11 @@ const router = Router();
 // Add this new route
 router.get(
   "/check",
-  /*Authenticate(jobSeeker),*/ (req: Request, res: Response) => {
-    const user = req.user;
-    res.status(200).json({ authenticated: true, user });
+  /*Authenticate(),*/ (req: Request, res: Response) => {
+    res.status(200).json({
+      authenticated: true,
+      message: "auth check sucessfully",
+    });
   }
 );
 
