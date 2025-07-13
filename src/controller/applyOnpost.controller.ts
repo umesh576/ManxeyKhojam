@@ -5,6 +5,7 @@ import User from "../model/user.model";
 import { sendEmailOnAppliedPost } from "../utils/sendPostApplyEmail.utils";
 import { sendReceiveApplyOnPostEmail } from "../utils/sendReceiveApplyOnPostemail.utils";
 import Post from "../model/post.model";
+import { checkUserCanApply } from "../utils/checkUserCanApply.utils";
 
 export const applyOnpost = async (req: Request, res: Response) => {
   const body = req.body;
@@ -32,13 +33,25 @@ export const applyOnpost = async (req: Request, res: Response) => {
     throw new customError("Please provide all required details", 400);
   }
 
+  // check if user applied already
+  const isApplied = await checkUserCanApply(body.userId, body.postId);
+  if (!isApplied) {
+    res.status(401).json({
+      status: "failed",
+      message: "user can already applied on the post.",
+      satatusCode: 401,
+      data: isApplied,
+    });
+    return;
+  }
+
   //user for admin for see who can applies
   const userAppliedDetails = await AppliedOnPost.create(body);
   console.log(userAppliedDetails);
 
   // check who cna applying on the post and update the user schema
   const user = await User.findById(body.userId);
-  user?.appliedOnPost.push((await userAppliedDetails)._id);
+  user?.appliedOnPost.push(userAppliedDetails._id);
   await user?.save();
 
   // check user can can applies on which post and update the post schema
