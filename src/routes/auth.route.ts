@@ -10,21 +10,19 @@
 // export default server;
 import { Router } from "express";
 import { Request, Response } from "express";
-// import { Authenticate } from "../middleware/authentication.middleware";
+import { Authenticate } from "../middleware/authentication.middleware";
+import { jobSeeker } from "../@types/role.jobseeker";
 // import { jobSeeker } from "../@types/role.jobseeker";
-// import { Authenticate } from "../middleware/authentication.middleware";
 
 const router = Router();
 
 // Add this new route
-router.get(
-  "/check",
-  /*Authenticate(),*/ (req: Request, res: Response) => {
-    res.status(200).json({
-      authenticated: true,
-      message: "auth check sucessfully",
-    });
-  }
-);
+router.get("/check", Authenticate(jobSeeker), (req: Request, res: Response) => {
+  res.status(200).json({
+    authenticated: true,
+    message: "auth check successfully",
+    user: req.user,
+  });
+});
 
 export default router;
