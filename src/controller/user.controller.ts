@@ -15,7 +15,6 @@ import { hash } from "../utils/bcrypt.hash";
 import { compare } from "bcrypt";
 import { generateToken } from "../utils/jwt.utils";
 import { Ipayload, Role } from "../@types/role.jobseeker";
-import { checkUser } from "../middleware/checkUser.middleware";
 import fs from "fs/promises";
 
 //api for the user registeriation
