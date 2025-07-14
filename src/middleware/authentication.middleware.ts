@@ -13,11 +13,6 @@ export const Authenticate = (
     try {
       const authHeader = req.headers["authorization"] as string;
 
-      console.log(
-        "👊 ~ authentication.middleware.ts:15 ~ return ~ token:",
-        req.headers["authorization"]
-      );
-
       if (!authHeader || !authHeader.startsWith("BEARER")) {
         throw new customError(
           "Unauthorized, Authorization header is missing",

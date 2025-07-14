@@ -126,14 +126,13 @@ export const login = async (req: Request, res: Response) => {
 
 //search user by id
 export const findOneUser = async (req: Request, res: Response) => {
-  const { userId } = req.body;
+  const { userId } = req.params;
   console.log(userId);
   if (!userId) {
     throw new customError("UserId need for search single user", 404);
   }
 
-  const user = await checkUser(userId);
-  // const user = await User.findById(userId);
+  const user = await User.findById(userId).select("-_id");
   res.status(201).json({
     status: "sucess",
     statuCode: 201,

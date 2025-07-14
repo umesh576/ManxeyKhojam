@@ -50,7 +50,7 @@ const router = Router();
 router.post("/login", login);
 router.post("/register", upload.single("profile"), registerUser);
 router.delete("/delete", Authenticate(admin), delUser);
-router.get("/searchById", Authenticate(admin), findOneUser);
+router.get("/:userId", findOneUser);
 router.get("/searchAll", Authenticate(admin), findAllUser);
 router.put("/update", updateUser);
 
