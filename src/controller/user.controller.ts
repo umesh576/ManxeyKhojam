@@ -14,7 +14,7 @@ import customError from "../middleware/errroHandler.middleware";
 import { hash } from "../utils/bcrypt.hash";
 import { compare } from "bcrypt";
 import { generateToken } from "../utils/jwt.utils";
-import { Ipayload, Role } from "../@types/role.jobseeker";
+import { admin, Ipayload, Role } from "../@types/role.jobseeker";
 import fs from "fs/promises";
 
 //api for the user registeriation
@@ -136,6 +136,26 @@ export const findOneUser = async (req: Request, res: Response) => {
     status: "sucess",
     statuCode: 201,
     message: "User search By Id done sucessfully",
+    data: user,
+  });
+};
+
+// search admin by id
+export const findOneAdmin = async (req: Request, res: Response) => {
+  const { userId } = req.params;
+  if (!userId) {
+    throw new customError("userId need for the search error.", 400);
+  }
+
+  const user = await User.findById(userId).populate("appliedOnPost");
+  if (!user || !(user.role !== "admin")) {
+    throw new customError("user not found.!", 404);
+  }
+
+  res.status(200).json({
+    status: "success",
+    message: "User fetched sucessfully",
+    statusCode: 200,
     data: user,
   });
 };

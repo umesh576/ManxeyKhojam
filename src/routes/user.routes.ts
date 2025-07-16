@@ -4,6 +4,7 @@ import path from "path";
 import {
   delUser,
   findAllUser,
+  findOneAdmin,
   findOneUser,
   login,
   updateUser,
@@ -51,6 +52,7 @@ router.post("/login", login);
 router.post("/register", upload.single("profile"), registerUser);
 router.delete("/delete", Authenticate(admin), delUser);
 router.get("/:userId", findOneUser);
+router.get("/admin/:userId", findOneAdmin);
 router.get("/searchAll", Authenticate(admin), findAllUser);
 router.put("/update", updateUser);
 
