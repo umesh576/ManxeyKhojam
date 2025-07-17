@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction, RequestHandler } from "express";
 import customError from "../middleware/errroHandler.middleware";
 import Post from "../model/post.model";
 // import mongoose from "mongoose";
@@ -150,21 +150,32 @@ export const updatePost = async (req: Request, res: Response) => {
 };
 
 //get post by id use in frontend if needed
-export const getPostById = async (req: Request, res: Response) => {
-  const { postId } = req.params;
-  if (!postId) {
-    return res.status(400).json({ message: "Post ID is required" });
-  }
-  const upPost = await Post.findById(postId);
-  console.log(upPost?.aapliedUser[0].toString());
-  if (!upPost) {
-    return res.status(404).json({ message: "Post not found" });
-  }
 
-  res.status(200).json({
-    status: "success",
-    success: true,
-    statusCode: 200,
-    data: upPost,
-  });
+export const getPostById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<any> => {
+  try {
+    const { postId } = req.params;
+
+    if (!postId) {
+      return res.status(400).json({ message: "Post ID is required" });
+    }
+
+    const upPost = await Post.findById(postId);
+
+    if (!upPost) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    return res.status(200).json({
+      status: "success",
+      success: true,
+      statusCode: 200,
+      data: upPost,
+    });
+  } catch (error) {
+    next(error); // Proper error handling
+  }
 };
