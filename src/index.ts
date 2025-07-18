@@ -12,7 +12,7 @@ import resetPassword from "./routes/resetPassword.routes";
 import postRoute from "./routes/post.routes";
 import appliedPostRoutes from "./routes/appliedPost.routes";
 import appliedOnPost from "./routes/appliedOnPost.routes";
-import authRoute from "./routes/auth.route";
+import authRoute from "./routes/authUser.route";
 import path from "path";
 
 import dotenv from "dotenv";
@@ -39,7 +39,7 @@ app.use(cookieParser());
 //
 app.use(
   cors({
-    origin: "http://localhost:3000", // your frontend origin
+    // origin: "http://localhost:3001", // your frontend origin
     credentials: true, // 🔑 allow cookies to be sent
   })
 );

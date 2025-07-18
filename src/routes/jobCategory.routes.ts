@@ -11,8 +11,8 @@ import { admin } from "../@types/role.jobseeker";
 
 const server = Router();
 
-server.post("/jcategory", createJobcategory);
-server.get("/getJobCategory", findJob);
+server.post("/jcategory", Authenticate(admin), createJobcategory);
+server.get("/getJobCategory", Authenticate(admin), findJob);
 server.get("/getJobCategoryById", Authenticate(admin), findJobById);
 server.delete("/delJobCategory", Authenticate(admin), deleteJobCategory);
 server.put("/updateJobCategory", Authenticate(admin), updateJobCategory);

@@ -4,8 +4,7 @@ import jobCategory from "../model/jobCategory.model";
 
 export const createJobcategory = async (req: Request, res: Response) => {
   const body = req.body;
-  console.log(body);
-  console.log(body.jobTitle || "umesh");
+  console.log(body.jobTitle);
   if (!body.jobTitle) {
     throw new customError("JobTitle is must needed", 404);
   }

@@ -14,7 +14,7 @@ import customError from "../middleware/errroHandler.middleware";
 import { hash } from "../utils/bcrypt.hash";
 import { compare } from "bcrypt";
 import { generateToken } from "../utils/jwt.utils";
-import { admin, Ipayload, Role } from "../@types/role.jobseeker";
+import { Ipayload, Role } from "../@types/role.jobseeker";
 import fs from "fs/promises";
 
 //api for the user registeriation
@@ -105,7 +105,7 @@ export const login = async (req: Request, res: Response) => {
   console.log(jwtToken);
 
   res
-    .cookie("access_token", jwtToken, {
+    .cookie("authToken", jwtToken, {
       httpOnly: true, // Prevent JavaScript access (always recommended)
       secure: process.env.NODE_ENV === "production", // HTTPS only in production
       sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax", // CSRF protection
