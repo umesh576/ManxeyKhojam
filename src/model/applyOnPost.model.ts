@@ -13,7 +13,7 @@ const applyOnPostSchema = new mongoose.Schema(
     resume: [
       {
         type: String,
-        required: [true, "resume required for true"],
+        required: [true, "Resume required for true"],
       },
     ],
     coverLetter: [
