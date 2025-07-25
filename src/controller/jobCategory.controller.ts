@@ -4,7 +4,6 @@ import jobCategory from "../model/jobCategory.model";
 
 export const createJobcategory = async (req: Request, res: Response) => {
   const body = req.body;
-  console.log(body.jobTitle);
   if (!body.jobTitle) {
     throw new customError("JobTitle is must needed", 404);
   }
@@ -34,16 +33,12 @@ export const findJob = async (req: Request, res: Response) => {
 };
 
 export const findJobById = async (req: Request, res: Response) => {
-  const body = req.body;
+  const { jobCategoryId } = req.params;
 
-  if (!body.jobCategoryId) {
+  if (!jobCategoryId) {
     throw new customError("Needed job Id for search", 404);
   }
-  const jobSearchId = await jobCategory.findById(body.jobCategoryId);
-  console.log(jobSearchId);
-
-  // const UserCreated = await jobCategory.findById(jobSearchId.createdBy);
-  // console.log(UserCreated);
+  const jobSearchId = await jobCategory.findById(jobCategoryId);
 
   res.status(201).json({
     status: "sucess",
@@ -54,9 +49,19 @@ export const findJobById = async (req: Request, res: Response) => {
 };
 
 export const deleteJobCategory = async (req: Request, res: Response) => {
-  const { jobCategoryId } = req.body;
+  const { jobCategoryId } = req.params;
   if (!jobCategoryId) {
     throw new customError("please provide jobCategoryId", 400);
+  }
+
+  const isExist = await jobCategory.findById(jobCategoryId);
+  if (!isExist) {
+    res.status(404).json({
+      status: "Failed",
+      statuscode: 404,
+      message: "Jobcategory cannot find.",
+      data: isExist,
+    });
   }
 
   const delJobCategory = await jobCategory.findByIdAndDelete(jobCategoryId);
