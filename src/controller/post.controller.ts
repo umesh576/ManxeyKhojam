@@ -2,8 +2,9 @@ import { Request, Response, NextFunction } from "express";
 import customError from "../middleware/errroHandler.middleware";
 import Post from "../model/post.model";
 // import mongoose from "mongoose";
-import { checkUser } from "../middleware/checkUser.middleware";
+// import { checkUser } from "../middleware/checkUser.middleware";
 import { deleteFiles } from "../utils/deleteFile";
+import jobCategory from "../model/jobCategory.model";
 // import User from "../model/employer.model";
 
 //for creating post
@@ -50,13 +51,13 @@ export const createPost = async (req: Request, res: Response) => {
     throw new customError("Title and description are required", 400);
   }
 
-  const { userId } = body;
+  // const { userId } = body;
 
   // Verify user exists
-  const user = await checkUser(userId);
-  if (!user) {
-    throw new customError("User not found", 404);
-  }
+  // const user = await checkUser(userId);
+  // if (!user) {
+  //   throw new customError("User not found", 404);
+  // }
 
   // Process files
   // Process files (optional)
@@ -65,16 +66,20 @@ export const createPost = async (req: Request, res: Response) => {
     picturePaths = files.photos.map((file) => file.path);
   }
 
+  const addOntheCategory = await jobCategory.findById(body.jobCategoryid);
+
   // Create post
   const newPost = await Post.create({
     ...body,
     pictures: picturePaths,
-    user: userId,
+    // user: userId,
   });
 
+  addOntheCategory?.postCreatedOn.push(newPost._id);
+  await addOntheCategory?.save();
   //Update user's createdPosts (correct way)
-  user.createdPost.push(newPost._id);
-  await user.save();
+  // user.createdPost.push(newPost._id);
+  // await user.save();
 
   // console.log("user update sucessfully", userUpdate);
 

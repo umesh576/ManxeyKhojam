@@ -13,11 +13,14 @@ const jobCategorySchema = new mongoose.Schema(
       required: [true, "Decription needed for more accurate information"],
       minLength: [10, "Give more info about job"],
     },
-    createdBy: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: [true, "User reequired for create Jobcategory"],
-    },
+    postCreatedOn: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "Post",
+        // required: false,
+        // default: "1235849653628741",
+      },
+    ],
   },
   { timestamps: true }
 );

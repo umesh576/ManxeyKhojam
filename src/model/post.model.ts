@@ -31,21 +31,26 @@ const postSchema = new mongoose.Schema(
         type: String,
       },
     ],
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
+    // user: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: "User",
+    //   required: true,
+    // },
     aapliedUser: [
       {
         type: mongoose.Types.ObjectId,
         ref: "User",
       },
     ],
-    jobCategory: {
+    jobCategoryid: {
       type: mongoose.Types.ObjectId,
       required: [true, "please provide jobcategory"],
       ref: "jobCategory",
+    },
+    companyName: {
+      type: String,
+      required: true,
+      trim: true,
     },
   },
   { timestamps: true }
