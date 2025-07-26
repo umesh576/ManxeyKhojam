@@ -87,3 +87,50 @@ export const applyOnpost = async (req: Request, res: Response) => {
     data: userAppliedDetails,
   });
 };
+
+// delete applied on post
+export const deleteApplyOnPost = async (req: Request, res: Response) => {
+  const { applyOnPostId } = req.params;
+  if (!applyOnPostId) {
+    throw new customError(
+      "aplyOnpost is nessaray for the delte the appplyOnpost",
+      404
+    );
+  }
+
+  const applliedPost = await AppliedOnPost.findById(applyOnPostId);
+  if (!applliedPost) {
+    throw new customError("applied post already deleted", 404);
+  }
+
+  console.log(applliedPost);
+  // const delAppliedOnpost = await AppliedOnPost.findByIdAndDelete(applyOnPostId);
+  // if (!delAppliedOnpost) {
+  //   throw new customError("Aplliedonpost is not valid!", 404);
+  // }
+  res.status(200).json({
+    status: "success",
+    statusCode: 200,
+    message: "User can document delete from the appliedOnpost",
+    data: applliedPost,
+  });
+};
+
+// see all aplliedOnpost
+export const getAllAppliedPost = async (req: Request, res: Response) => {
+  // const {applliedOnpostId} = req.params
+  // if(!applliedOnpostId){
+  //   throw new customError('applliedOnpostId is needed',404)
+  // }
+
+  const allAppliedPost = await AppliedOnPost.find();
+  if (!allAppliedPost) {
+    throw new customError("No user can apply.", 404);
+  }
+  res.status(200).json({
+    status: "success",
+    statusCode: 404,
+    message: "All appllied on this post detail are here",
+    data: allAppliedPost,
+  });
+};

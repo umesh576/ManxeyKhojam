@@ -72,14 +72,14 @@ const jobSeeker = new mongoose.Schema(
         ref: "post",
       },
     ],
-    appliedPost: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        trim: true,
-        ref: "applyPost",
-      },
-    ],
+    // appliedPost: [
+    //   {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     required: true,
+    //     trim: true,
+    //     ref: "applyPost",
+    //   },
+    // ],
     createdOtp: {
       type: Number,
       required: false,

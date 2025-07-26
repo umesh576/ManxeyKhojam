@@ -1,7 +1,10 @@
 import { Router } from "express";
-import { applyOnpost } from "../controller/applyOnpost.controller";
+import {
+  applyOnpost,
+  deleteApplyOnPost,
+} from "../controller/applyOnpost.controller";
 import { Authenticate } from "../middleware/authentication.middleware";
-import { jobSeeker } from "../@types/role.jobseeker";
+import { admin, jobSeeker } from "../@types/role.jobseeker";
 import path from "path";
 import multer from "multer";
 
@@ -28,4 +31,9 @@ const uploadMiddleware = upload.fields([
 const server = Router();
 
 server.post("/apply", Authenticate(jobSeeker), uploadMiddleware, applyOnpost);
+server.delete(
+  "/delapplyPost/:applyOnpostId",
+  Authenticate(admin),
+  deleteApplyOnPost
+);
 export default server;

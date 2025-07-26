@@ -6,10 +6,12 @@ const applyOnPostSchema = new mongoose.Schema(
       type: Number,
       required: false,
     },
-    userId: {
-      type: mongoose.Types.ObjectId,
-      required: [true, "userId required for validate user"],
-    },
+    userId: [
+      {
+        type: mongoose.Types.ObjectId,
+        required: [true, "userId required for validate user"],
+      },
+    ],
     resume: [
       {
         type: String,
