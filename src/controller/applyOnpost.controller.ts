@@ -163,3 +163,29 @@ export const getAllAppliedPost = async (req: Request, res: Response) => {
     data: allAppliedPost,
   });
 };
+
+export const getAppliedOnPostById = async (req: Request, res: Response) => {
+  const appliedOnpostId = req.params.id;
+  if (!appliedOnpostId) {
+    throw new customError(
+      "AppliedOppost id required for the find appliedOnPost",
+      404
+    );
+  }
+
+  const appliedOnpost = await AppliedOnPost.findById(appliedOnpostId);
+  if (!appliedOnpost) {
+    res.status(200).json({
+      status: "success",
+      statusCode: 404,
+      message: " Appllied on post not found.",
+      data: appliedOnpost,
+    });
+  }
+  res.status(200).json({
+    status: "success",
+    statusCode: 404,
+    message: "All appllied on post is successgully post",
+    data: appliedOnpost,
+  });
+};

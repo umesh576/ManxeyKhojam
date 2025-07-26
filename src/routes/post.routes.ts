@@ -24,7 +24,7 @@ const upload = multer({ storage: storage });
 
 const postRouter = Router(); // Better name than 'server'
 
-postRouter.post("/add", upload.any(), createPost);
+postRouter.post("/add", upload.any(), Authenticate(admin), createPost);
 postRouter.delete("/delPost", Authenticate(admin), deletePost);
 postRouter.patch("/update", updatePost);
 postRouter.get("/seeAll", getAllPost);

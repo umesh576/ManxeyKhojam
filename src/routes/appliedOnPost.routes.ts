@@ -2,6 +2,8 @@ import { Router } from "express";
 import {
   applyOnpost,
   deleteApplyOnPost,
+  getAllAppliedPost,
+  getAppliedOnPostById,
 } from "../controller/applyOnpost.controller";
 import { Authenticate } from "../middleware/authentication.middleware";
 import { admin, jobSeeker } from "../@types/role.jobseeker";
@@ -36,4 +38,6 @@ server.delete(
   Authenticate(admin),
   deleteApplyOnPost
 );
+server.get("/", Authenticate(admin), getAllAppliedPost);
+server.get("/:id", Authenticate(admin), getAppliedOnPostById);
 export default server;
