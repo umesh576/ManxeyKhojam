@@ -164,6 +164,7 @@ export const getAllAppliedPost = async (req: Request, res: Response) => {
   });
 };
 
+// get applied post by id
 export const getAppliedOnPostById = async (req: Request, res: Response) => {
   const appliedOnpostId = req.params.id;
   if (!appliedOnpostId) {
