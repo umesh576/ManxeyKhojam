@@ -51,14 +51,10 @@ export const createPost = async (req: Request, res: Response) => {
     throw new customError("Title and description are required", 400);
   }
 
-  // const { userId } = body;
+  if (!body.jobCategoryid) throw new customError("categoryId is required", 400);
 
-  // Verify user exists
-  // const user = await checkUser(userId);
-  // if (!user) {
-  //   throw new customError("User not found", 404);
-  // }
-
+  const isExists = await jobCategory.findById(body.jobCategoryid);
+  if (!isExists) throw new customError("categoryId is not found", 400);
   // Process files
   // Process files (optional)
   let picturePaths: string[] = [];
