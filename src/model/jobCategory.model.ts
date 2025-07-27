@@ -17,6 +17,7 @@ const jobCategorySchema = new mongoose.Schema(
       {
         type: mongoose.Types.ObjectId,
         ref: "Post",
+        required: false,
       },
     ],
   },
