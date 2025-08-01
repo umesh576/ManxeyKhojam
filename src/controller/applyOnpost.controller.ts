@@ -7,8 +7,8 @@ import { sendReceiveApplyOnPostEmail } from "../utils/sendReceiveApplyOnPostemai
 import Post from "../model/post.model";
 import { checkUserCanApply } from "../utils/checkUserCanApply.utils";
 import mongoose from "mongoose";
-
 let appliedpostid: mongoose.Types.ObjectId;
+
 export const applyOnpost = async (req: Request, res: Response) => {
   try {
     const body = req.body;
