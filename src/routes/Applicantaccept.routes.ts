@@ -3,6 +3,6 @@ import { sendAcceptMessage } from "../controller/applicantaccept.controller";
 
 const applicantRoute = Router();
 
-applicantRoute.post("/send", sendAcceptMessage);
+applicantRoute.post("/send/:applyOnpostId", sendAcceptMessage);
 
 export default applicantRoute;

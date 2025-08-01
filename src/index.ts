@@ -64,7 +64,7 @@ app.use("/api/post", postRoute);
 // app.use("/api/applied", appliedPostRoutes);
 app.use("/api/applypost", appliedOnPost);
 app.use("/api/auth", authRoute);
-app.use("/useraccpet", acceptRoute);
+app.use("/api/useraccpet", acceptRoute);
 
 app.listen(PORT, () => {
   console.log(`server running at http://localhost:${PORT}`);
