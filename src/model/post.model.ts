@@ -1,4 +1,5 @@
 import mongoose, { model } from "mongoose";
+import { ref } from "process";
 
 const postSchema = new mongoose.Schema(
   {
@@ -48,6 +49,13 @@ const postSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    acceptApplicant: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "accpetInterviews",
+        // required: false,
+      },
+    ],
   },
   { timestamps: true }
 );
