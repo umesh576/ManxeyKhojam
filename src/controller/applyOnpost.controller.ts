@@ -52,6 +52,7 @@ export const applyOnpost = async (req: Request, res: Response) => {
     const userAppliedDetails = await AppliedOnPost.create(body);
     console.log(userAppliedDetails);
     appliedpostid = userAppliedDetails._id;
+
     // check who can applying on the post and update the user schema
 
     // check user can can applies on which post and update the post schema

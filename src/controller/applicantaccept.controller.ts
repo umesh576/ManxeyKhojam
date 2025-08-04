@@ -7,24 +7,28 @@ import { sendJobAcceptMessage } from "../utils/sendjobAcceptmessage.utils";
 import Post from "../model/post.model";
 
 export const sendAcceptMessage = async (req: Request, res: Response) => {
-  const { applyOnpostId, interviewDate, interviewTime, place } = req.body;
+  const {
+    userId,
+    resume,
+    coverLetter,
+    experience,
+    firstName,
+    lastname,
+    email,
+    number,
+    postId,
+    linkdenProfile,
+    interviewDate,
+    interviewTime,
+    place,
+    applyOnpostId,
+  } = req.body;
 
   if (!applyOnpostId || !interviewDate || !interviewTime || !place) {
     throw new customError(
       "All data neede for send the mail and accept the request",
       404
     );
-  }
-
-  const appliedPostUser = await AppliedOnPost.findById(applyOnpostId);
-  //   console.log(appliedPostUser);
-  if (!appliedPostUser) {
-    res.status(404).json({
-      status: "failed",
-      statusCode: 404,
-      message: "Post cannot be applied.",
-      data: appliedPostUser,
-    });
   }
 
   //   const appliedUser = appliedPostUser?.userId;
@@ -40,11 +44,19 @@ export const sendAcceptMessage = async (req: Request, res: Response) => {
   }
 
   const acceptUserRequest = await AcceptInterview.create({
-    applyOnpostId,
+    userId,
+    resume,
+    coverLetter,
+    experience,
+    firstName,
+    lastname,
+    email,
+    number,
+    postId,
+    linkdenProfile,
     interviewDate,
     interviewTime,
     place,
-    userId: appliedPostUser?.userId,
   });
 
   if (!acceptUserRequest) {
@@ -62,12 +74,17 @@ export const sendAcceptMessage = async (req: Request, res: Response) => {
      </div>`;
 
   const mailContent = {
-    to: String(appliedPostUser?.email),
+    to: String(appliedPost?.email),
     subject: "You are accepted for this job.",
     html,
   };
 
   await sendJobAcceptMessage(mailContent);
+
+  const delAplpiedOnPost = await AppliedOnPost.findByIdAndDelete(applyOnpostId);
+  if (!delAplpiedOnPost) {
+    console.log("del");
+  }
 
   res.status(200).json({
     status: "success",
@@ -77,6 +94,7 @@ export const sendAcceptMessage = async (req: Request, res: Response) => {
   });
 };
 
+// getting all accept post by post id
 export const getAllAcceptInterviewPost = async (
   req: Request,
   res: Response
@@ -101,9 +119,19 @@ export const getAllAcceptInterviewPost = async (
   // const
 };
 
-const rejectUserApplication = async (req: Request, res: Response) => {
+export const rejectUserApplication = async (req: Request, res: Response) => {
   const applliedOnPostId = req.params.id;
   if (!applliedOnPostId) {
     throw new customError("applliedOnPostId need for reject user user", 404);
   }
+  const rejectUser = await AppliedOnPost.findByIdAndDelete(applliedOnPostId);
+  if (!rejectUser) {
+    throw new customError("user not found", 404);
+  }
+  res.status(200).json({
+    status: "success",
+    statusCode: 200,
+    message: "User sucessfully reject.",
+    data: rejectUser,
+  });
 };

@@ -1,16 +1,17 @@
 import mongoose from "mongoose";
-
 const emailRegex = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
-const acceptInterviewSchema = new mongoose.Schema(
+
+const PendingUsertSchema = new mongoose.Schema(
   {
-    userId: {
-      type: mongoose.Types.ObjectId,
-      ref: "user",
-    },
     experience: {
       type: Number,
       required: false,
     },
+    userId: {
+      type: mongoose.Types.ObjectId,
+      required: [true, "userId required for validate user"],
+    },
+
     resume: [
       {
         type: String,
@@ -49,26 +50,12 @@ const acceptInterviewSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
-    interviewDate: {
-      type: String,
-      required: true,
-    },
-    interviewTime: {
-      type: String,
-      required: true,
-    },
-    place: {
-      type: String,
-      required: true,
-      trim: true,
+    appliedOnPostid: {
+      type: mongoose.Types.ObjectId,
     },
   },
   { timestamps: true }
 );
 
-const AcceptInterview = mongoose.model(
-  "accpetInterviews",
-  acceptInterviewSchema
-);
-
-export default AcceptInterview;
+const pendingReviewUser = mongoose.model("pendinguser", PendingUsertSchema);
+export default pendingReviewUser;
