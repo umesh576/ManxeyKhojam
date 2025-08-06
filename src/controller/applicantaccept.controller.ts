@@ -5,6 +5,7 @@ import AppliedOnPost from "../model/applyOnPost.model";
 import AcceptInterview from "../model/acceptInterview.model";
 import { sendJobAcceptMessage } from "../utils/sendjobAcceptmessage.utils";
 import Post from "../model/post.model";
+import { sendRejectMessage } from "../utils/sendRejectmail";
 
 export const sendAcceptMessage = async (req: Request, res: Response) => {
   const {
@@ -124,10 +125,18 @@ export const rejectUserApplication = async (req: Request, res: Response) => {
   if (!applliedOnPostId) {
     throw new customError("applliedOnPostId need for reject user user", 404);
   }
+
   const rejectUser = await AppliedOnPost.findByIdAndDelete(applliedOnPostId);
   if (!rejectUser) {
     throw new customError("user not found", 404);
   }
+
+  const mailOption = {
+    to: rejectUser.email,
+    html: `<h1>Application rejected.</h1><p>Your application is rejected this time work on your skill and be prefect in your work.</p>`,
+    subject: "Your application is rejected.",
+  };
+  await sendRejectMessage(mailOption);
   res.status(200).json({
     status: "success",
     statusCode: 200,

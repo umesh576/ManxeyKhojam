@@ -39,18 +39,12 @@ export const applyOnpost = async (req: Request, res: Response) => {
     // check if user applied already
     const isApplied = await checkUserCanApply(body.userId, body.postId);
     if (!isApplied) {
-      res.status(401).json({
-        status: "failed",
-        message: "user can already applied on the post.",
-        satatusCode: 401,
-        data: isApplied,
-      });
-      return;
+      throw new customError("User cannot apply on post", 401);
     }
 
     //user for admin for see who can applies
     const userAppliedDetails = await AppliedOnPost.create(body);
-    console.log(userAppliedDetails);
+
     appliedpostid = userAppliedDetails._id;
 
     // check who can applying on the post and update the user schema
@@ -109,7 +103,7 @@ export const applyOnpost = async (req: Request, res: Response) => {
       });
     }
 
-    console.error("Application error:", error);
+    // console.error("Application error:", error);
     return res.status(500).json({
       status: "error",
       message: "Internal server error",
